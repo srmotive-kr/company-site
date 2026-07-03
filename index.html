@@ -3,550 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SRMOTIVE — Motivating People & Technology</title>
-<meta name="description" content="(주)에스알모티브는 중소기업의 업무 효율을 높이는 소프트웨어 솔루션을 개발합니다.">
+<title>SRMOTIVE — Under Construction</title>
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
 :root {
-  --blue-900: #1E3A8A;
-  --blue-700: #1D4ED8;
-  --blue-600: #2563EB;
-  --blue-500: #3B82F6;
-  --blue-100: #DBEAFE;
-  --blue-50:  #EFF6FF;
-  --orange-500: #F97316;
-  --orange-400: #FB923C;
-  --gray-900: #0F172A;
-  --gray-700: #334155;
-  --gray-500: #64748B;
-  --gray-300: #CBD5E1;
-  --gray-100: #F1F5F9;
-  --gray-50:  #F8FAFC;
-  --white: #FFFFFF;
-  --font-en: 'Nunito', sans-serif;
-  --font-ko: 'Noto Sans KR', 'Nunito', sans-serif;
+  --blue-deep: #0F2462;
+  --blue:      #1A3570;
+  --blue-mid:  #1D4ED8;
+  --orange:    #F97316;
+  --orange-d:  #EA6C00;
+  --white:     #FFFFFF;
+  --font-en:   'Sora', sans-serif;
+  --font-ko:   'Noto Sans KR', 'Sora', sans-serif;
 }
-
-html { scroll-behavior: smooth; }
-body {
+html, body {
+  height: 100%;
   font-family: var(--font-ko);
-  color: var(--gray-900);
-  background: var(--white);
-  line-height: 1.6;
+  background: var(--blue-deep);
+  color: var(--white);
   -webkit-font-smoothing: antialiased;
 }
-
-/* ─── NAVBAR ─── */
-.navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--gray-100);
-  height: 68px;
-}
-.navbar-inner {
-  max-width: 1200px; margin: 0 auto; height: 100%;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px;
-}
-.logo-mark {
-  display: flex; align-items: center; gap: 10px;
-  text-decoration: none;
-}
-.logo-icon {
-  width: 38px; height: 38px;
-  background: linear-gradient(135deg, var(--blue-600), var(--blue-900));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 24px;
   position: relative;
-  box-shadow: 0 2px 8px rgba(29,78,216,0.35);
-}
-.logo-icon-sr {
-  font-family: var(--font-en);
-  font-weight: 900; font-size: 13px;
-  color: white; letter-spacing: -0.5px;
-}
-.logo-icon-dot {
-  position: absolute; top: -3px; right: -3px;
-  width: 10px; height: 10px;
-  background: var(--orange-500); border-radius: 50%;
-  border: 2px solid white;
-}
-.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-.logo-name {
-  font-family: var(--font-en);
-  font-weight: 900; font-size: 18px; color: var(--blue-900);
-}
-.logo-name .o { color: var(--orange-500); }
-.logo-tagline {
-  font-family: var(--font-en);
-  font-size: 8.5px; color: var(--gray-500);
-  letter-spacing: 2px; text-transform: uppercase;
-}
-.nav-menu {
-  display: flex; align-items: center; gap: 4px;
-}
-.nav-menu a {
-  color: var(--gray-700); text-decoration: none;
-  font-size: 14px; font-weight: 600;
-  padding: 8px 14px; border-radius: 8px;
-  transition: all 0.15s;
-}
-.nav-menu a:hover { background: var(--gray-100); color: var(--blue-700); }
-.nav-cta {
-  background: var(--blue-700) !important;
-  color: white !important;
-  border-radius: 10px !important;
-  padding: 9px 18px !important;
-  font-weight: 700 !important;
-  margin-left: 8px;
-  box-shadow: 0 2px 8px rgba(29,78,216,0.3);
-  transition: all 0.2s !important;
-}
-.nav-cta:hover {
-  background: var(--blue-900) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(29,78,216,0.4) !important;
+  overflow: hidden;
 }
 
-/* ─── HERO ─── */
-.hero {
-  padding-top: 68px;
-  background: linear-gradient(145deg, #0F2462 0%, var(--blue-900) 30%, var(--blue-700) 70%, #1a56db 100%);
-  min-height: 600px;
-  display: flex; align-items: center;
-  position: relative; overflow: hidden;
-}
-.hero-grid-bg {
-  position: absolute; inset: 0;
+/* Grid background */
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background-image:
     linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 48px 48px;
+  pointer-events: none;
 }
-.hero-glow {
-  position: absolute; right: -80px; top: -80px;
-  width: 560px; height: 560px;
+
+/* Glow effects */
+.glow-r {
+  position: absolute; right: -100px; top: -100px;
+  width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 65%);
   pointer-events: none;
 }
-.hero-inner {
-  width: 100%; max-width: 1200px; margin: 0 auto;
-  padding: 100px 40px 80px;
-  position: relative; z-index: 1;
+.glow-l {
+  position: absolute; left: -100px; bottom: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(29,78,216,0.2) 0%, transparent 65%);
+  pointer-events: none;
 }
-.hero-badge {
+
+/* Content */
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 520px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+.logo svg {
+  width: 280px;
+  height: auto;
+}
+
+/* Badge */
+.badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: 100px; padding: 6px 16px;
-  margin-bottom: 32px;
-}
-.hero-badge-dot {
-  width: 7px; height: 7px;
-  background: var(--orange-400); border-radius: 50%;
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink {
-  0%,100% { opacity:1; } 50% { opacity:0.3; }
-}
-.hero-badge span {
-  font-size: 13px; color: rgba(255,255,255,0.88); font-weight: 600;
-}
-.hero h1 {
+  background: rgba(249,115,22,0.12);
+  border: 1px solid rgba(249,115,22,0.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  margin-bottom: 28px;
   font-family: var(--font-en);
-  font-size: clamp(44px, 6vw, 68px);
-  font-weight: 900; color: white;
-  line-height: 1.05; letter-spacing: -2px;
-  margin-bottom: 24px;
+  font-size: 12px; font-weight: 600;
+  color: var(--orange);
+  letter-spacing: 1px; text-transform: uppercase;
 }
-.hero h1 .accent { color: var(--orange-400); }
-.hero-desc {
-  font-size: 17px; color: rgba(255,255,255,0.72);
-  max-width: 500px; line-height: 1.75;
-  margin-bottom: 44px;
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
 }
-.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.btn-primary {
-  background: var(--orange-500); color: white;
-  padding: 14px 28px; border-radius: 12px;
-  font-size: 15px; font-weight: 700;
-  text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  box-shadow: 0 4px 16px rgba(249,115,22,0.45);
-  transition: all 0.2s;
-}
-.btn-primary:hover {
-  background: var(--orange-400);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(249,115,22,0.5);
-}
-.btn-ghost {
-  background: rgba(255,255,255,0.08); color: white;
-  padding: 14px 28px; border-radius: 12px;
-  font-size: 15px; font-weight: 600;
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: all 0.2s;
-}
-.btn-ghost:hover { background: rgba(255,255,255,0.14); }
-
-/* ─── SECTION BASE ─── */
-section { padding: 96px 40px; }
-.container { max-width: 1200px; margin: 0 auto; }
-.section-eyebrow {
-  font-family: var(--font-en);
-  font-size: 12px; font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: var(--blue-600); margin-bottom: 12px;
-}
-.section-title {
-  font-size: clamp(28px, 4vw, 38px); font-weight: 900;
-  color: var(--gray-900); letter-spacing: -0.5px;
-  margin-bottom: 14px; line-height: 1.2;
-}
-.section-subtitle {
-  font-size: 16px; color: var(--gray-500);
-  line-height: 1.75; max-width: 540px;
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
 }
 
-/* ─── PRODUCTS ─── */
-.products { background: var(--gray-50); }
-.products-head { text-align: center; margin-bottom: 56px; }
-.products-head .section-subtitle { margin: 0 auto; }
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-.product-card {
-  background: white; border-radius: 24px;
-  padding: 40px 36px;
-  border: 1.5px solid var(--gray-100);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  text-decoration: none; color: inherit;
-  display: block; position: relative;
-  transition: all 0.28s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-.product-card.live:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(29,78,216,0.12);
-  border-color: var(--blue-100);
-}
-.product-card.coming { opacity: 0.55; pointer-events: none; }
-.product-icon-wrap {
-  width: 60px; height: 60px;
-  background: linear-gradient(135deg, var(--blue-600), var(--blue-900));
-  border-radius: 16px; margin-bottom: 28px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 12px rgba(29,78,216,0.3);
-}
-.product-card.coming .product-icon-wrap {
-  background: var(--gray-200); box-shadow: none;
-}
-.product-chip {
-  display: inline-block; font-size: 11px; font-weight: 700;
-  padding: 4px 12px; border-radius: 100px; margin-bottom: 14px;
-}
-.chip-live { background: var(--blue-50); color: var(--blue-700); }
-.chip-soon { background: var(--gray-100); color: var(--gray-500); }
-.product-name {
+/* Heading */
+h1 {
   font-family: var(--font-en);
-  font-size: 26px; font-weight: 900; color: var(--gray-900);
-  letter-spacing: -0.5px; margin-bottom: 10px;
-}
-.product-card.coming .product-name { color: var(--gray-400); }
-.product-desc {
-  font-size: 14px; color: var(--gray-500); line-height: 1.7;
-  margin-bottom: 32px;
-}
-.product-arrow {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--blue-700); font-size: 14px; font-weight: 700;
-}
-.product-arrow svg { transition: transform 0.2s; }
-.product-card.live:hover .product-arrow svg { transform: translateX(4px); }
-
-/* ─── ABOUT ─── */
-.about { background: white; }
-.about-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 72px; align-items: center;
-}
-.about-stats {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 16px; margin-top: 40px;
-}
-.stat-box {
-  background: var(--gray-50); border-radius: 16px;
-  padding: 24px; border: 1px solid var(--gray-100);
-}
-.stat-number {
-  font-family: var(--font-en);
-  font-size: 38px; font-weight: 900;
-  color: var(--blue-700); line-height: 1; margin-bottom: 6px;
-}
-.stat-label { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
-.about-card {
-  background: linear-gradient(145deg, #0F2462, var(--blue-900), var(--blue-700));
-  border-radius: 28px; padding: 52px 48px;
-  color: white; position: relative; overflow: hidden;
-}
-.about-card::before {
-  content: '';
-  position: absolute; right: -60px; bottom: -60px;
-  width: 260px; height: 260px;
-  background: radial-gradient(circle, rgba(249,115,22,0.25) 0%, transparent 70%);
-}
-.about-card::after {
-  content: '';
-  position: absolute; left: -40px; top: -40px;
-  width: 180px; height: 180px;
-  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-}
-.about-card-content { position: relative; z-index: 1; }
-.about-co-en {
-  font-family: var(--font-en);
-  font-size: 46px; font-weight: 900;
-  letter-spacing: -1.5px; line-height: 1;
-  margin-bottom: 6px;
-}
-.about-co-en .orange { color: var(--orange-400); }
-.about-co-kr {
-  font-size: 16px; color: rgba(255,255,255,0.6);
-  margin-bottom: 36px;
-}
-.about-divider {
-  height: 1px; background: rgba(255,255,255,0.12);
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1px;
   margin-bottom: 20px;
 }
-.about-tagline {
-  font-family: var(--font-en);
-  font-size: 15px; color: rgba(255,255,255,0.55);
-  font-style: italic;
+h1 .under { color: rgba(255,255,255,0.85); }
+h1 .construction { color: var(--orange); }
+
+.desc {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  font-weight: 400;
 }
 
-/* ─── CTA STRIP ─── */
-.cta-strip { background: var(--gray-900); padding: 56px 40px; }
-.cta-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+/* Progress bar */
+.progress-wrap {
+  background: rgba(255,255,255,0.08);
+  border-radius: 100px;
+  height: 4px;
+  margin-bottom: 40px;
+  overflow: hidden;
 }
-.cta-text h3 {
-  font-size: 22px; font-weight: 700; color: white; margin-bottom: 6px;
+.progress-bar {
+  height: 100%;
+  width: 72%;
+  background: linear-gradient(90deg, var(--blue-mid), var(--orange));
+  border-radius: 100px;
 }
-.cta-text p { font-size: 14px; color: var(--gray-500); }
-.btn-email {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 12px; padding: 13px 22px;
-  color: white; text-decoration: none;
-  font-size: 14px; font-weight: 600;
-  transition: all 0.2s;
-}
-.btn-email:hover { background: rgba(255,255,255,0.13); }
 
-/* ─── FOOTER ─── */
-footer {
-  background: var(--gray-900);
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 36px 40px;
+/* Contact */
+.contact {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
 }
-.footer-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center;
-  justify-content: space-between; flex-wrap: wrap; gap: 16px;
+.contact a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  transition: color 0.15s, border-color 0.15s;
 }
-.footer-copy { font-size: 13px; color: var(--gray-500); }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a {
-  font-size: 13px; color: var(--gray-500);
-  text-decoration: none; transition: color 0.15s;
+.contact a:hover {
+  color: var(--orange);
+  border-color: var(--orange);
 }
-.footer-links a:hover { color: white; }
 
-/* ─── SCROLL REVEAL ─── */
-.reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+/* Divider line */
+.divider {
+  width: 48px; height: 2px;
+  background: rgba(249,115,22,0.5);
+  border-radius: 2px;
+  margin: 0 auto 40px;
 }
-.reveal.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
+<div class="glow-r"></div>
+<div class="glow-l"></div>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="navbar-inner">
-    <a href="/" class="logo-mark">
-      <div class="logo-icon">
-        <span class="logo-icon-sr">SR</span>
-        <div class="logo-icon-dot"></div>
-      </div>
-      <div class="logo-text">
-        <span class="logo-name">SR<span class="o">MOTIVE</span></span>
-        <span class="logo-tagline">Business Solutions</span>
-      </div>
-    </a>
-    <nav class="nav-menu">
-      <a href="#products">제품</a>
-      <a href="#about">회사소개</a>
-      <a href="mailto:srmotive@daum.net">문의</a>
-      <a href="./smart-hr-plus/" class="nav-cta">Smart HR+ 받기</a>
-    </nav>
+<div class="content">
+  <!-- Logo -->
+  <div class="logo">
+    <svg viewBox="535 575 2791 1227" xmlns="http://www.w3.org/2000/svg" fill="none" aria-label="SRMOTIVE">
+      <!-- S top half -->
+      <path d="M0 519 0 178.936C-3.30379e-14 80.1125 80.1126 0 178.937 0L184.497 0C283.321-3.30378e-14 363.433 80.1125 363.433 178.936L363.433 281.324 406 281.324 304.5 281.324 203 281.324 245.567 281.324 245.567 178.936C245.567 145.208 218.225 117.866 184.497 117.866L178.937 117.866C145.208 117.866 117.866 145.208 117.866 178.936L117.866 519Z" fill="#7AB8F5" fill-rule="evenodd" transform="matrix(1.83697e-16 1 1 -1.83697e-16 542 810)"/>
+      <!-- R bowl -->
+      <path d="M1084 810 1421.86 810C1521.9 810 1603 891.099 1603 991.139L1603 991.139C1603 1091.18 1521.9 1172.28 1421.86 1172.28L1114.09 1172.28 1114.09 1215 1114.09 1113.75 1114.09 1012.5 1114.09 1055.22 1421.86 1055.22C1457.25 1055.22 1485.94 1026.53 1485.94 991.139L1485.94 991.139C1485.94 955.748 1457.25 927.057 1421.86 927.057L1084 927.057Z" fill="#7AB8F5" fill-rule="evenodd"/>
+      <!-- R diagonal leg -->
+      <path d="M0 144.5 234 0 468 0 0 289Z" fill="#7AB8F5" fill-rule="evenodd" transform="matrix(1 -1.22465e-16 -1.22465e-16 -1 1114 1418)"/>
+      <!-- S bottom half -->
+      <path d="M0 520 0 179.707C-3.31015e-14 80.4574 80.4574 0 179.707 0L183.09 0C282.34-3.31015e-14 362.797 80.4574 362.797 179.707L362.797 232.981 405 232.981 303.75 232.981 202.5 232.981 244.703 232.981 244.703 179.707C244.703 145.679 217.118 118.094 183.09 118.094L179.707 118.094C145.679 118.094 118.094 145.678 118.094 179.706L118.094 520Z" fill="#7AB8F5" fill-rule="evenodd" transform="matrix(-6.12323e-17 -1 -1 6.12323e-17 1055 1418)"/>
+      <!-- MOTIVE -->
+      <text fill="#F97316" font-family="'Sora','Arial Black',Arial,sans-serif" font-weight="700" font-size="454" x="1591.15" y="1413">MOTIVE</text>
+      <!-- Tagline -->
+      <text fill="rgba(255,255,255,0.4)" font-family="'Sora',Arial,sans-serif" font-weight="400" font-size="88" x="1613.96" y="1509">MOTIVATING PEOPLE &amp; TECHNOLOGY</text>
+    </svg>
   </div>
-</nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      <span>비즈니스 소프트웨어 솔루션</span>
-    </div>
-    <h1>Motivating<br><span class="accent">People &</span><br>Technology.</h1>
-    <p class="hero-desc">
-      (주)에스알모티브는 중소기업의 업무 효율을 높이는<br>
-      실용적인 소프트웨어 솔루션을 만듭니다.
-    </p>
-    <div class="hero-actions">
-      <a href="#products" class="btn-primary">
-        제품 보기
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
-        </svg>
-      </a>
-      <a href="mailto:srmotive@daum.net" class="btn-ghost">도입 문의</a>
-    </div>
+  <!-- Badge -->
+  <div class="badge">
+    <div class="badge-dot"></div>
+    준비 중
   </div>
-</section>
 
-<!-- PRODUCTS -->
-<section class="products" id="products">
-  <div class="container">
-    <div class="products-head reveal">
-      <p class="section-eyebrow">Our Products</p>
-      <h2 class="section-title">제품 라인업</h2>
-      <p class="section-subtitle">현장의 불편함에서 시작한 솔루션을 지속적으로 개발합니다.</p>
-    </div>
-    <div class="products-grid">
+  <!-- Heading -->
+  <h1>
+    <span class="under">Under</span><br>
+    <span class="construction">Construction</span>
+  </h1>
 
-      <a href="./smart-hr-plus/" class="product-card live reveal">
-        <div class="product-icon-wrap">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <circle cx="10" cy="8" r="4" fill="white"/>
-            <path d="M2 22c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M19 13l2.5 2.5L26 11" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="product-chip chip-live">출시</span>
-        <h3 class="product-name">Smart HR+</h3>
-        <p class="product-desc">
-          중소기업을 위한 인사·급여 관리 솔루션.<br>
-          직원 관리, 급여 계산, 4대보험까지 한 번에.<br>
-          5명 미만 기업은 무료로 사용 가능합니다.
-        </p>
-        <span class="product-arrow">
-          자세히 보기
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
-          </svg>
-        </span>
-      </a>
+  <div class="divider"></div>
 
-      <div class="product-card coming reveal" style="transition-delay:0.1s">
-        <div class="product-icon-wrap">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect x="5" y="5" width="18" height="18" rx="4" stroke="#CBD5E1" stroke-width="2"/>
-            <path d="M14 10v8M10 14h8" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="product-chip chip-soon">준비 중</span>
-        <h3 class="product-name" style="color:var(--gray-400)">Coming Soon</h3>
-        <p class="product-desc">새로운 비즈니스 솔루션을 준비 중입니다. 출시 소식을 기대해 주세요.</p>
-      </div>
+  <p class="desc">
+    더 나은 서비스로 찾아뵐 준비를 하고 있습니다.<br>
+    곧 만나뵙겠습니다.
+  </p>
 
-    </div>
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-bar"></div>
   </div>
-</section>
 
-<!-- ABOUT -->
-<section class="about" id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div class="reveal">
-        <p class="section-eyebrow">About Us</p>
-        <h2 class="section-title">사람과 기술을<br>동시에 움직이는 힘</h2>
-        <p style="font-size:15px; color:var(--gray-500); line-height:1.85; margin-top:16px;">
-          현장의 불편함에서 출발한 소프트웨어 회사입니다.<br>
-          복잡한 업무를 단순하고 정확하게 처리할 수 있도록<br>
-          실용적인 솔루션을 개발합니다.
-        </p>
-        <div class="about-stats">
-          <div class="stat-box">
-            <div class="stat-number">FREE</div>
-            <div class="stat-label">5명 미만 기업<br>완전 무료</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-number">100%</div>
-            <div class="stat-label">오프라인 설치형<br>완전한 데이터 보안</div>
-          </div>
-        </div>
-      </div>
-      <div class="about-card reveal" style="transition-delay:0.15s">
-        <div class="about-card-content">
-          <div class="about-co-en">SR<span class="orange">MOTIVE</span></div>
-          <div class="about-co-kr">(주)에스알모티브 / SRMOTIVE Co., Ltd.</div>
-          <div class="about-divider"></div>
-          <div class="about-tagline">Motivating People &amp; Technology</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA STRIP -->
-<div class="cta-strip">
-  <div class="cta-inner">
-    <div class="cta-text reveal">
-      <h3>제품 도입이나 문의사항이 있으신가요?</h3>
-      <p>메일로 연락주시면 빠르게 답변드립니다.</p>
-    </div>
-    <a href="mailto:srmotive@daum.net" class="btn-email reveal" style="transition-delay:0.1s">
-      <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-      </svg>
-      srmotive@daum.net
-    </a>
-  </div>
+  <p class="contact">
+    문의 : <a href="mailto:srmotive@daum.net">srmotive@daum.net</a>
+  </p>
 </div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <span class="footer-copy">© 2026 SRMOTIVE Co., Ltd. (주)에스알모티브. All rights reserved.</span>
-    <div class="footer-links">
-      <a href="./smart-hr-plus/">Smart HR+</a>
-      <a href="mailto:srmotive@daum.net">문의하기</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
 </body>
 </html>

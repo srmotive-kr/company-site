@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRMOTIVE — Motivating People & Technology</title>
+<meta name="description" content="(주)에스알모티브는 중소기업의 업무 효율을 높이는 소프트웨어 솔루션을 개발합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --blue:        #4472C4;
+  --blue-dark:   #2A4F9C;
+  --blue-deeper: #1A3570;
+  --blue-light:  #6FA0E6;
+  --blue-pale:   #EBF1FB;
+  --orange:      #EF8B47;
+  --orange-dark: #D4722E;
+  --orange-pale: #FDF0E7;
+  --gray-900: #18191F;
+  --gray-700: #3A3D4A;
+  --gray-500: #6B6E7E;
+  --gray-300: #C8CAD4;
+  --gray-100: #F0F1F5;
+  --gray-50:  #F7F8FA;
+  --warm-bg:  #F5F3EF;
+  --white:    #FFFFFF;
+  --font-en: 'Sora', sans-serif;
+  --font-ko: 'Noto Sans KR', 'Sora', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-ko);
+  color: var(--gray-900);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-100);
+  height: 80px;
+}
+.navbar-inner {
+  max-width: 1180px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+}
+.logo-mark {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.navbar-logo {
+  height: 72px;
+  width: auto;
+  display: block;
+}
+.nav-menu {
+  display: flex; align-items: center; gap: 2px;
+}
+.nav-menu a {
+  color: var(--gray-700); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  padding: 7px 14px; border-radius: 6px;
+  transition: all 0.15s; letter-spacing: -0.1px;
+}
+.nav-menu a:hover { background: var(--gray-100); color: var(--blue); }
+.nav-cta {
+  background: var(--blue) !important;
+  color: white !important;
+  border-radius: 7px !important;
+  padding: 8px 18px !important;
+  font-weight: 600 !important;
+  margin-left: 10px;
+  transition: all 0.2s !important;
+}
+.nav-cta:hover {
+  background: var(--blue-dark) !important;
+  transform: translateY(-1px);
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding-top: 80px;
+  background: linear-gradient(150deg, var(--blue-deeper) 0%, var(--blue-dark) 50%, var(--blue) 100%);
+  min-height: 580px;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+}
+.hero-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+.hero-glow {
+  position: absolute; right: -100px; top: -60px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(239,139,71,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute; left: -80px; bottom: -80px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(111,160,230,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner {
+  width: 100%; max-width: 1180px; margin: 0 auto;
+  padding: 88px 40px 80px;
+  position: relative; z-index: 1;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 4px; padding: 5px 14px;
+  margin-bottom: 28px;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--orange); border-radius: 50%;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+.hero-badge span {
+  font-family: var(--font-en);
+  font-size: 12px; color: rgba(255,255,255,0.8);
+  font-weight: 500; letter-spacing: 0.3px;
+}
+.hero h1 {
+  font-family: var(--font-en);
+  font-size: clamp(42px, 5.5vw, 64px);
+  font-weight: 800; color: white;
+  line-height: 1.08; letter-spacing: -1.5px;
+  margin-bottom: 22px;
+}
+.hero h1 .accent { color: var(--orange); }
+.hero-desc {
+  font-family: var(--font-ko);
+  font-size: 16px; color: rgba(255,255,255,0.68);
+  max-width: 460px; line-height: 1.85;
+  margin-bottom: 40px; font-weight: 400;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--orange); color: white;
+  padding: 13px 26px; border-radius: 7px;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  letter-spacing: -0.1px;
+  box-shadow: 0 4px 16px rgba(239,139,71,0.4);
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  background: var(--orange-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(239,139,71,0.45);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.88);
+  padding: 13px 26px; border-radius: 7px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  letter-spacing: -0.1px;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+/* ─── SECTION BASE ─── */
+section { padding: 88px 40px; }
+.container { max-width: 1180px; margin: 0 auto; }
+.section-eyebrow {
+  font-family: var(--font-en);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--font-ko);
+  font-size: clamp(26px, 3.5vw, 36px); font-weight: 700;
+  color: var(--gray-900); letter-spacing: -0.5px;
+  margin-bottom: 12px; line-height: 1.25;
+}
+.section-subtitle {
+  font-size: 15px; color: var(--gray-500);
+  line-height: 1.8; max-width: 520px; font-weight: 400;
+}
+
+/* ─── PRODUCTS ─── */
+.products { background: var(--warm-bg); }
+.products-head { text-align: center; margin-bottom: 52px; }
+.products-head .section-subtitle { margin: 0 auto; }
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  background: white; border-radius: 16px;
+  padding: 36px 32px;
+  border: 1px solid #E4E2DE;
+  text-decoration: none; color: inherit;
+  display: block; position: relative;
+  transition: all 0.25s ease;
+}
+.product-card.live:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(68,114,196,0.1);
+  border-color: var(--blue-pale);
+}
+.product-card.coming { opacity: 0.5; pointer-events: none; }
+.product-icon-wrap {
+  width: 52px; height: 52px;
+  background: var(--blue);
+  border-radius: 12px; margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: center;
+}
+.product-card.coming .product-icon-wrap { background: var(--gray-300); }
+.product-chip {
+  display: inline-block; font-family: var(--font-en);
+  font-size: 10px; font-weight: 600;
+  padding: 3px 10px; border-radius: 3px;
+  margin-bottom: 12px; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.chip-live { background: var(--blue-pale); color: var(--blue); }
+.chip-soon { background: var(--gray-100); color: var(--gray-500); }
+.product-name {
+  font-family: var(--font-en);
+  font-size: 22px; font-weight: 700; color: var(--gray-900);
+  letter-spacing: -0.3px; margin-bottom: 10px;
+}
+.product-desc {
+  font-size: 14px; color: var(--gray-500); line-height: 1.75;
+  margin-bottom: 28px; font-weight: 400;
+}
+.product-arrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--blue); font-size: 13px; font-weight: 600;
+  font-family: var(--font-en);
+}
+.product-arrow svg { transition: transform 0.2s; }
+.product-card.live:hover .product-arrow svg { transform: translateX(4px); }
+
+/* ─── PRICING ─── */
+.pricing { background: var(--warm-bg); padding: 80px 0; }
+.pricing-head { text-align: center; margin-bottom: 52px; }
+.pricing-head .section-subtitle { margin: 0 auto; }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.pricing-card {
+  background: white; border: 2px solid var(--gray-100);
+  border-radius: 20px; padding: 32px 26px;
+  position: relative; transition: all 0.25s ease;
+}
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(68,114,196,0.1);
+}
+.pricing-card.featured {
+  border-color: var(--blue);
+  box-shadow: 0 4px 24px rgba(68,114,196,0.12);
+}
+.plan-badge {
+  position: absolute; top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--orange); color: white;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 14px; border-radius: 20px;
+  white-space: nowrap; letter-spacing: 0.3px;
+}
+.plan-tier {
+  font-family: var(--font-en);
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  color: var(--blue); margin-bottom: 8px;
+}
+.pricing-card.plan-free .plan-tier { color: var(--gray-500); }
+.plan-name-ko {
+  font-size: 20px; font-weight: 700; color: var(--gray-900);
+  margin-bottom: 4px; letter-spacing: -0.3px;
+}
+.plan-range {
+  font-size: 13px; color: var(--gray-500);
+  margin-bottom: 20px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.plan-original {
+  font-size: 14px; font-weight: 600; color: var(--gray-300);
+  text-align: left; margin-bottom: 0;
+}
+.price-cross-svg { display: block; overflow: visible; }
+.plan-price {
+  font-family: var(--font-en);
+  font-size: 30px; font-weight: 800; color: var(--gray-900);
+  line-height: 1; margin-bottom: 4px;
+}
+.plan-price span { font-size: 14px; font-weight: 500; color: var(--gray-500); }
+.plan-monthly { font-size: 12px; color: var(--gray-500); margin-bottom: 10px; height: 18px; }
+.plan-discount {
+  display: inline-block; background: var(--orange-pale);
+  color: var(--orange-dark); font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 6px; margin-bottom: 22px;
+  height: 24px;
+}
+.plan-free-badge {
+  display: inline-block; background: var(--blue-pale);
+  color: var(--blue); font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 6px; margin-bottom: 22px;
+  height: 24px;
+}
+.plan-features {
+  list-style: none; margin: 0 0 26px;
+  display: flex; flex-direction: column; gap: 9px;
+}
+.plan-features li {
+  font-size: 13px; color: var(--gray-700);
+  display: flex; align-items: flex-start; gap: 8px; line-height: 1.5;
+}
+.plan-features li::before {
+  content: '';
+  width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+  background: var(--blue-pale)
+    url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='%234472C4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat center;
+}
+.plan-cta {
+  display: block; text-align: center; padding: 12px 20px;
+  border-radius: 10px; font-size: 14px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+}
+.plan-cta-primary { background: var(--blue); color: white; }
+.plan-cta-primary:hover { background: var(--blue-dark); }
+.plan-cta-outline { border: 1.5px solid var(--gray-300); color: var(--gray-700); }
+.plan-cta-outline:hover { border-color: var(--blue); color: var(--blue); }
+.pricing-note {
+  text-align: center; margin-top: 32px;
+  font-size: 12.5px; color: var(--gray-500); line-height: 2;
+}
+.pricing-note strong { color: var(--orange-dark); font-weight: 700; }
+
+/* ─── ABOUT ─── */
+.about { background: white; }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
+}
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-top: 36px;
+}
+.stat-box {
+  background: var(--warm-bg); border-radius: 12px;
+  padding: 22px 20px; border: 1px solid #E8E5E0;
+}
+.stat-number {
+  font-family: var(--font-en);
+  font-size: 32px; font-weight: 800;
+  color: var(--blue); line-height: 1; margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+.stat-label { font-size: 12px; color: var(--gray-500); line-height: 1.55; font-weight: 400; }
+.about-card {
+  background: linear-gradient(140deg, var(--blue-deeper) 0%, var(--blue-dark) 55%, var(--blue) 100%);
+  border-radius: 20px; padding: 44px 40px;
+  color: white; position: relative; overflow: hidden;
+}
+.about-card::after {
+  content: '';
+  position: absolute; right: -50px; bottom: -50px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(239,139,71,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.about-card-content { position: relative; z-index: 1; }
+.about-logo-wrap {
+  background: white;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+.about-logo-svg {
+  width: 100%; max-width: 300px; height: auto;
+  display: block;
+}
+.about-co-kr {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  margin-bottom: 20px; font-weight: 400;
+}
+.about-divider {
+  height: 1px; background: rgba(255,255,255,0.1);
+  margin-bottom: 16px;
+}
+.about-tagline {
+  font-family: var(--font-en);
+  font-size: 13px; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.5px; font-weight: 400;
+}
+
+/* ─── CTA STRIP ─── */
+.cta-strip { background: var(--gray-900); padding: 52px 40px; }
+.cta-inner {
+  max-width: 1180px; margin: 0 auto;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 28px; flex-wrap: wrap;
+}
+.cta-text h3 {
+  font-size: 19px; font-weight: 700; color: white;
+  margin-bottom: 5px; letter-spacing: -0.3px;
+}
+.cta-text p { font-size: 13px; color: var(--gray-500); font-weight: 400; }
+.btn-email {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 7px; padding: 12px 20px;
+  color: white; text-decoration: none;
+  font-family: var(--font-en);
+  font-size: 13px; font-weight: 500;
+  transition: all 0.2s;
+}
+.btn-email:hover { background: rgba(255,255,255,0.11); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--gray-900);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 36px 40px 28px;
+}
+.footer-inner { max-width: 1180px; margin: 0 auto; }
+.footer-biz {
+  display: flex; flex-direction: column; gap: 6px;
+  padding-bottom: 22px; margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.footer-biz-line {
+  display: flex; flex-wrap: wrap; gap: 4px 18px;
+  font-size: 11.5px; color: var(--gray-500); line-height: 1.7;
+  font-family: var(--font-ko); font-weight: 400;
+}
+.footer-biz-line .pipe { color: rgba(255,255,255,0.08); user-select: none; }
+.footer-biz-line a { color: var(--gray-500); text-decoration: none; }
+.footer-biz-line a:hover { color: white; }
+.footer-bottom {
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 11.5px; color: var(--gray-500); font-weight: 400; }
+.footer-links { display: flex; gap: 18px; }
+.footer-links a {
+  font-size: 11.5px; color: var(--gray-500);
+  text-decoration: none; transition: color 0.15s;
+}
+.footer-links a:hover { color: white; }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="logo-mark">
+      <img src="./srmotive-logo.png" alt="에스알모티브" class="navbar-logo">
+    </a>
+    <nav class="nav-menu">
+      <a href="#products">제품</a>
+      <a href="#pricing">가격</a>
+      <a href="#about">회사소개</a>
+      <a href="mailto:srmotive@daum.net">문의</a>
+      <a href="./smart-hr-plus/" class="nav-cta">Smart HR+ 받기</a>
+    </nav>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span>Business Software Solutions</span>
+    </div>
+    <h1>Motivating<br><span class="accent">People &</span><br>Technology.</h1>
+    <p class="hero-desc">
+      (주)에스알모티브는 중소기업의 업무 효율을 높이는<br>
+      실용적인 소프트웨어 솔루션을 만듭니다.
+    </p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">
+        제품 보기
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+        </svg>
+      </a>
+      <a href="mailto:srmotive@daum.net" class="btn-ghost">도입 문의</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="products-head reveal">
+      <p class="section-eyebrow">Our Products</p>
+      <h2 class="section-title">제품 라인업</h2>
+      <p class="section-subtitle">현장의 불편함에서 시작한 솔루션을 지속적으로 개발합니다.</p>
+    </div>
+    <div class="products-grid">
+
+      <a href="./smart-hr-plus/index.html" class="product-card live reveal">
+        <div class="product-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+            <circle cx="10" cy="8" r="4" fill="white"/>
+            <path d="M2 22c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M19 13l2.5 2.5L26 11" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="product-chip chip-live">출시</span>
+        <h3 class="product-name">Smart HR+</h3>
+        <p class="product-desc">
+          중소기업을 위한 인사·급여 관리 솔루션.<br>
+          직원 관리, 급여 계산, 4대보험까지 한 번에.<br>
+          5명 미만 기업은 무료로 사용 가능합니다.
+        </p>
+        <span class="product-arrow">
+          자세히 보기
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+          </svg>
+        </span>
+      </a>
+
+      <div class="product-card coming reveal" style="transition-delay:0.1s">
+        <div class="product-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+            <rect x="5" y="5" width="18" height="18" rx="4" stroke="#CBD5E1" stroke-width="2"/>
+            <path d="M14 10v8M10 14h8" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="product-chip chip-soon">준비 중</span>
+        <h3 class="product-name" style="color:var(--gray-300)">Coming Soon</h3>
+        <p class="product-desc">새로운 비즈니스 솔루션을 준비 중입니다. 출시 소식을 기대해 주세요.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing-head reveal">
+      <p class="section-eyebrow">Pricing</p>
+      <h2 class="section-title">Smart HR+ 요금제</h2>
+      <p class="section-subtitle">사업장 규모에 맞는 플랜을 선택하세요. <strong style="color:var(--orange)">첫해 한정 특별 할인</strong> 진행 중!</p>
+    </div>
+    <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+      <defs>
+        <marker id="orange-arrowhead" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#F97316"/>
+        </marker>
+      </defs>
+    </svg>
+    <div class="pricing-grid">
+
+      <!-- FREE -->
+      <div class="pricing-card plan-free reveal">
+        <div class="plan-tier">FREE</div>
+        <div class="plan-name-ko">무료 플랜</div>
+        <div class="plan-range">5인 미만 사업장</div>
+        <div class="plan-original"></div>
+        <div class="plan-price">₩0 <span>/년</span></div>
+        <div class="plan-monthly">조건 없이 평생 무료</div>
+        <div class="plan-free-badge">라이선스 신청 필요</div>
+        <ul class="plan-features">
+          <li>직원 5명 미만 지원</li>
+          <li>인사·급여 전 기능 이용</li>
+          <li>오프라인 완전 보안</li>
+          <li>이메일로 라이선스 키 발급</li>
+        </ul>
+        <a href="./smart-hr-plus/#free-apply" class="plan-cta plan-cta-outline">
+          무료 라이선스 신청
+        </a>
+      </div>
+
+      <!-- STARTER -->
+      <div class="pricing-card featured reveal" style="transition-delay:0.07s">
+        <div class="plan-badge">첫해 70% 할인</div>
+        <div class="plan-tier">STARTER</div>
+        <div class="plan-name-ko">스타터 플랜</div>
+        <div class="plan-range">5인 ~ 10인 미만 사업장</div>
+        <div class="plan-original">정상가 ₩33,000/년</div>
+        <svg class="price-cross-svg" width="100%" height="32" fill="none">
+          <line x1="2%" y1="-10" x2="75%" y2="-10" stroke="#F97316" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="75%" y1="-10" x2="54%" y2="38" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" marker-end="url(#orange-arrowhead)"/>
+        </svg>
+        <div class="plan-price">₩9,900 <span>/년</span></div>
+        <div class="plan-monthly">월 825원</div>
+        <div class="plan-discount">첫해 한정 ↓70%</div>
+        <ul class="plan-features">
+          <li>직원 10명 미만 지원</li>
+          <li>인사·급여 전 기능 이용</li>
+          <li>오프라인 완전 보안</li>
+          <li>2대 PC 설치 가능</li>
+        </ul>
+        <a href="./smart-hr-plus/#purchase" class="plan-cta plan-cta-primary">
+          시작하기
+        </a>
+      </div>
+
+      <!-- PRO -->
+      <div class="pricing-card reveal" style="transition-delay:0.14s">
+        <div class="plan-badge" style="background:var(--blue-dark)">인기</div>
+        <div class="plan-tier">PRO</div>
+        <div class="plan-name-ko">프로 플랜</div>
+        <div class="plan-range">10인 ~ 30인 미만 사업장</div>
+        <div class="plan-original">정상가 ₩55,000/년</div>
+        <svg class="price-cross-svg" width="100%" height="32" fill="none">
+          <line x1="2%" y1="-10" x2="75%" y2="-10" stroke="#F97316" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="75%" y1="-10" x2="54%" y2="38" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" marker-end="url(#orange-arrowhead)"/>
+        </svg>
+        <div class="plan-price">₩19,800 <span>/년</span></div>
+        <div class="plan-monthly">월 1,650원</div>
+        <div class="plan-discount">첫해 한정 ↓64%</div>
+        <ul class="plan-features">
+          <li>직원 30명 미만 지원</li>
+          <li>인사·급여 전 기능 이용</li>
+          <li>오프라인 완전 보안</li>
+          <li>3대 PC 설치 가능</li>
+        </ul>
+        <a href="./smart-hr-plus/#purchase" class="plan-cta plan-cta-primary">
+          시작하기
+        </a>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="pricing-card reveal" style="transition-delay:0.21s">
+        <div class="plan-tier">ENTERPRISE</div>
+        <div class="plan-name-ko">엔터프라이즈</div>
+        <div class="plan-range">30인 이상 기업</div>
+        <div class="plan-original">정상가 ₩99,000/년</div>
+        <svg class="price-cross-svg" width="100%" height="32" fill="none">
+          <line x1="2%" y1="-10" x2="75%" y2="-10" stroke="#F97316" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="75%" y1="-10" x2="54%" y2="38" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" marker-end="url(#orange-arrowhead)"/>
+        </svg>
+        <div class="plan-price">₩39,600 <span>/년</span></div>
+        <div class="plan-monthly">월 3,300원</div>
+        <div class="plan-discount">첫해 한정 ↓60%</div>
+        <ul class="plan-features">
+          <li>직원 수 제한 없음</li>
+          <li>인사·급여 전 기능 이용</li>
+          <li>오프라인 완전 보안</li>
+          <li>설치 PC 수 협의</li>
+        </ul>
+        <a href="./smart-hr-plus/#purchase" class="plan-cta plan-cta-primary">
+          시작하기
+        </a>
+      </div>
+
+    </div>
+    <p class="pricing-note">
+      ※ 첫해 한정 특별 할인가는 <strong>신규 구매 고객</strong>에게 적용됩니다. 갱신 시 정상가 적용.<br>
+      ※ FREE 라이선스는 신청 후 <strong>이메일로 라이선스 키 발급</strong>됩니다. (온라인 신청 필요)
+    </p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="section-eyebrow">About Us</p>
+        <h2 class="section-title">사람과 기술을<br>동시에 움직이는 힘</h2>
+        <p style="font-size:15px; color:var(--gray-500); line-height:1.9; margin-top:14px; font-weight:400;">
+          현장의 불편함에서 출발한 소프트웨어 회사입니다.<br>
+          복잡한 업무를 단순하고 정확하게 처리할 수 있도록<br>
+          실용적인 솔루션을 개발합니다.
+        </p>
+        <div class="about-stats">
+          <div class="stat-box">
+            <div class="stat-number">FREE</div>
+            <div class="stat-label">5명 미만 기업<br>완전 무료</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">오프라인 설치형<br>완전한 데이터 보안</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-card reveal" style="transition-delay:0.12s">
+        <div class="about-card-content">
+          <div class="about-logo-wrap">
+            <img src="./srmotive-logo.png" class="about-logo-svg" alt="에스알모티브 로고">
+          </div>
+          <div class="about-co-kr">(주)에스알모티브 · SRMOTIVE Co., Ltd.</div>
+          <div class="about-divider"></div>
+          <div class="about-tagline">Motivating People &amp; Technology</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <div class="cta-text reveal">
+      <h3>제품 도입이나 문의사항이 있으신가요?</h3>
+      <p>메일로 연락주시면 빠르게 답변드립니다.</p>
+    </div>
+    <a href="mailto:srmotive@daum.net" class="btn-email reveal" style="transition-delay:0.08s">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+      </svg>
+      srmotive@daum.net
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-biz">
+      <div class="footer-biz-line">
+        <span>상호: 주식회사 에스알모티브</span>
+        <span class="pipe">|</span>
+        <span>대표자: 김지훈</span>
+        <span class="pipe">|</span>
+        <span>사업자등록번호: 814-87-00899</span>
+        <span class="pipe">|</span>
+        <span>통신판매업신고번호: 제 2025-창원의창-0278 호</span>
+      </div>
+      <div class="footer-biz-line">
+        <span>주소: 경상남도 창원시 의창구 용지로293번길 28, 우영프라자 419호 (사림동)</span>
+      </div>
+      <div class="footer-biz-line">
+        <span>전화: <a href="tel:055-713-2057">055-713-2057</a></span>
+        <span class="pipe">|</span>
+        <span>이메일: <a href="mailto:srmotive@daum.net">srmotive@daum.net</a></span>
+        <span class="pipe">|</span>
+        <span>호스팅 서비스 제공자: GitHub Pages (GitHub, Inc.)</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 주식회사 에스알모티브. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="./smart-hr-plus/">Smart HR+</a>
+        <a href="mailto:srmotive@daum.net">문의하기</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
