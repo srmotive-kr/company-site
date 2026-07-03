@@ -134,19 +134,28 @@ section { padding:88px 40px; }
 
 /* ─── DOWNLOAD ─── */
 .download { background:var(--gray-50); }
-.download-box { background:white; border-radius:28px; padding:56px; border:1.5px solid var(--gray-100); box-shadow:0 4px 24px rgba(0,0,0,0.05); max-width:720px; margin:0 auto; text-align:center; }
-.download-box h2 { font-size:30px; font-weight:900; color:var(--gray-900); margin-bottom:12px; }
-.download-box p { font-size:15px; color:var(--gray-500); margin-bottom:36px; line-height:1.7; }
-.license-form { display:flex; gap:12px; max-width:480px; margin:0 auto 16px; }
-.license-input { flex:1; padding:14px 18px; border:1.5px solid var(--gray-300); border-radius:12px; font-size:14px; font-family:var(--font-ko); color:var(--gray-900); transition:border-color 0.2s; outline:none; }
+.download-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:960px; margin:0 auto; }
+.download-box { background:white; border-radius:28px; padding:44px 40px; border:1.5px solid var(--gray-100); box-shadow:0 4px 24px rgba(0,0,0,0.05); text-align:center; }
+.download-box h2 { font-size:24px; font-weight:900; color:var(--gray-900); margin-bottom:12px; }
+.download-box p { font-size:14px; color:var(--gray-500); margin-bottom:28px; line-height:1.75; }
+.free-form { display:flex; flex-direction:column; gap:10px; }
+.free-input { width:100%; padding:13px 16px; border:1.5px solid var(--gray-300); border-radius:12px; font-size:14px; font-family:var(--font-ko); color:var(--gray-900); transition:border-color 0.2s; outline:none; box-sizing:border-box; }
+.free-input:focus { border-color:var(--blue-500); box-shadow:0 0 0 3px var(--blue-100); }
+.free-input::placeholder { color:var(--gray-300); }
+.free-submit { width:100%; background:var(--blue-700); color:white; padding:14px; border-radius:12px; border:none; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font-ko); transition:all 0.2s; margin-top:4px; }
+.free-submit:hover:not(:disabled) { background:var(--blue-900); transform:translateY(-1px); }
+.free-submit:disabled { opacity:0.6; cursor:not-allowed; }
+.form-msg { display:none; margin-top:12px; padding:12px 16px; border-radius:10px; font-size:13px; line-height:1.6; text-align:left; }
+.form-msg.success { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; }
+.form-msg.error   { background:#FEF2F2; color:#991B1B; border:1px solid #FECACA; }
+.license-form { display:flex; flex-direction:column; gap:10px; }
+.license-input { width:100%; padding:13px 16px; border:1.5px solid var(--gray-300); border-radius:12px; font-size:14px; font-family:var(--font-ko); color:var(--gray-900); transition:border-color 0.2s; outline:none; box-sizing:border-box; }
 .license-input:focus { border-color:var(--blue-500); box-shadow:0 0 0 3px var(--blue-100); }
 .license-input::placeholder { color:var(--gray-300); }
-.license-submit { background:var(--blue-700); color:white; padding:14px 24px; border-radius:12px; border:none; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; font-family:var(--font-ko); transition:all 0.2s; }
-.license-submit:hover { background:var(--blue-900); transform:translateY(-1px); }
-.download-note { font-size:12px; color:var(--gray-400); }
-.download-note a { color:var(--blue-600); text-decoration:none; }
-.download-already { margin-top:28px; padding-top:28px; border-top:1px solid var(--gray-100); font-size:13px; color:var(--gray-500); }
-.download-already a { color:var(--blue-600); font-weight:600; text-decoration:none; }
+.license-submit { width:100%; background:var(--orange-500); color:white; padding:14px; border-radius:12px; border:none; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font-ko); transition:all 0.2s; }
+.license-submit:hover:not(:disabled) { background:var(--orange-400); transform:translateY(-1px); }
+.license-submit:disabled { opacity:0.6; cursor:not-allowed; }
+@media(max-width:680px) { .download-grid { grid-template-columns:1fr; } }
 
 /* ─── FAQ ─── */
 .faq { background:white; }
@@ -382,7 +391,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
         <div class="plan-price">
           <span class="price-amount gray">₩0</span>
         </div>
-        <p class="price-desc gray">직원 4명 이하 · 기간 무제한</p>
+        <p class="price-desc gray">직원 5명 이하 · 연 1회 무료 갱신</p>
         <ul class="plan-features dark">
           <li>
             <svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
@@ -454,23 +463,46 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
 <!-- DOWNLOAD -->
 <section class="download" id="download">
   <div class="container">
-    <div class="download-box reveal">
-      <svg width="52" height="52" viewBox="0 0 52 52" fill="none" style="margin:0 auto 24px;display:block">
-        <rect width="52" height="52" rx="14" fill="#EFF6FF"/>
-        <path d="M16 36h20M26 16v14M19 27l7 7 7-7" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <h2>Smart HR+ 다운로드</h2>
-      <p>라이선스 키를 입력하면 설치 파일을 다운로드할 수 있습니다.<br>아직 라이선스 키가 없으시면 FREE 플랜으로 바로 시작하세요.</p>
-      <div class="license-form">
-        <input type="text" class="license-input" placeholder="라이선스 키를 입력하세요 (예: SMHR-XXXX-XXXX-XXXX)">
-        <button class="license-submit">다운로드</button>
+    <div class="download-grid">
+
+      <!-- FREE 플랜 신청 -->
+      <div class="download-box reveal">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="margin:0 auto 20px;display:block">
+          <rect width="44" height="44" rx="12" fill="#EFF6FF"/>
+          <path d="M22 10v14M15 19l7 7 7-7M12 32h20" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2>FREE 플랜 신청</h2>
+        <p>아래 정보를 입력하시면 라이선스 키를 이메일로 바로 보내드립니다.<br>직원 5명 이하, 모든 기능 무료.</p>
+        <form class="free-form" id="free-form" autocomplete="off">
+          <input id="free-name"    class="free-input" type="text"  placeholder="담당자 이름"  required>
+          <input id="free-company" class="free-input" type="text"  placeholder="회사명"        required>
+          <input id="free-email"   class="free-input" type="email" placeholder="이메일 주소"  required>
+          <button class="free-submit" id="free-submit" type="submit">라이선스 키 받기 →</button>
+        </form>
+        <div class="form-msg" id="free-msg"></div>
       </div>
-      <p class="download-note">
-        라이선스 키 구매는 <a href="mailto:srmotive@daum.net">srmotive@daum.net</a>으로 문의해주세요.
-      </p>
-      <div class="download-already">
-        이미 구매하셨나요? 라이선스 키를 입력하면 재다운로드가 가능합니다.
+
+      <!-- 라이선스 키로 다운로드 -->
+      <div class="download-box reveal" style="transition-delay:0.08s">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="margin:0 auto 20px;display:block">
+          <rect width="44" height="44" rx="12" fill="#FFF7ED"/>
+          <rect x="12" y="18" width="20" height="16" rx="3" stroke="#F97316" stroke-width="2.2"/>
+          <path d="M16 18v-4a6 6 0 0112 0v4" stroke="#F97316" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="22" cy="26" r="2" fill="#F97316"/>
+        </svg>
+        <h2>라이선스로 다운로드</h2>
+        <p>발급받은 라이선스 키를 입력하시면<br>최신 설치 파일을 다운로드할 수 있습니다.</p>
+        <div class="license-form">
+          <input id="license-key-input" class="license-input" type="text"
+            placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX">
+          <button class="license-submit" id="download-btn">다운로드 →</button>
+        </div>
+        <div class="form-msg" id="download-msg"></div>
+        <p style="margin-top:20px;font-size:12px;color:var(--gray-400)">
+          이메일로 수신된 라이선스 키를 붙여 넣으세요.
+        </p>
       </div>
+
     </div>
   </div>
 </section>
@@ -485,10 +517,17 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
     <div class="faq-list">
       <div class="faq-item reveal">
         <button class="faq-q">
+          라이선스 키는 어떻게 받나요?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a">이 페이지 하단 'FREE 플랜 신청' 폼에서 이름·회사명·이메일을 입력하시면 즉시 이메일로 라이선스 키를 발송해드립니다. FREE 플랜 라이선스 키는 매년 1회 무료로 갱신할 수 있으며, 갱신 안내 이메일을 보내드립니다.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">
           무료 버전과 유료 버전의 차이는 무엇인가요?
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="faq-a">FREE 플랜은 직원 4명 이하 기업에서 모든 핵심 기능을 무료로 사용할 수 있습니다. 5명 이상의 직원이 필요한 경우 PRO 플랜을 이용하시면 됩니다. PRO 플랜은 현재 출시 준비 중입니다.</div>
+        <div class="faq-a">FREE 플랜은 직원 5명 이하 기업에서 모든 핵심 기능을 무료로 사용할 수 있습니다. 라이선스 키 발급 후 사용이 가능하며 매년 1회 무료로 갱신합니다. 5명을 초과하는 경우 PRO 플랜을 이용하시면 됩니다 (출시 준비 중).</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">
@@ -545,6 +584,10 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
 </footer>
 
 <script>
+const SUPABASE_URL  = 'https://nwrcbcoqcsactnskdotc.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_fJRse4JPny8TchCb-MVCeg_DYMnnn7z';
+const HEADERS = { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
+
 // Intersection Observer for reveal
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
@@ -559,6 +602,76 @@ document.querySelectorAll('.faq-q').forEach(btn => {
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if(!isOpen) item.classList.add('open');
   });
+});
+
+// ─── FREE 플랜 신청 폼 ─────────────────────────────────
+document.getElementById('free-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('free-submit');
+  const msg = document.getElementById('free-msg');
+  btn.disabled = true;
+  btn.textContent = '처리 중...';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/request-free-license', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({
+        contact_name: document.getElementById('free-name').value.trim(),
+        company_name: document.getElementById('free-company').value.trim(),
+        email:        document.getElementById('free-email').value.trim(),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '오류가 발생했습니다.');
+    msg.className = 'form-msg success';
+    msg.textContent = data.resent
+      ? '✓ 이전에 발급된 라이선스 키를 이메일로 재발송했습니다. 메일함을 확인해주세요.'
+      : '✓ 라이선스 키를 이메일로 발송했습니다. 메일함(스팸 포함)을 확인해주세요.';
+    msg.style.display = 'block';
+    e.target.reset();
+  } catch (err) {
+    msg.className = 'form-msg error';
+    msg.textContent = '⚠ ' + err.message;
+    msg.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '라이선스 키 받기 →';
+  }
+});
+
+// ─── 라이선스 키 다운로드 ──────────────────────────────
+document.getElementById('download-btn').addEventListener('click', async () => {
+  const key = document.getElementById('license-key-input').value.trim();
+  const msg = document.getElementById('download-msg');
+  const btn = document.getElementById('download-btn');
+  msg.style.display = 'none';
+  if (!key) {
+    msg.className = 'form-msg error';
+    msg.textContent = '⚠ 라이선스 키를 입력해주세요.';
+    msg.style.display = 'block';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = '확인 중...';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/generate-download-url', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({ license_key: key }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '다운로드 실패');
+    msg.className = 'form-msg success';
+    msg.textContent = '✓ 잠시 후 다운로드가 시작됩니다... (v' + data.version + ')';
+    msg.style.display = 'block';
+    setTimeout(() => { window.location.href = data.url; }, 800);
+  } catch (err) {
+    msg.className = 'form-msg error';
+    msg.textContent = '⚠ ' + err.message;
+    msg.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '다운로드 →';
+  }
 });
 </script>
 </body>
