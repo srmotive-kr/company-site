@@ -27,13 +27,11 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--wh
 .navbar { position: fixed; top:0; left:0; right:0; z-index:100; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-100); height: 68px; }
 .navbar-inner { max-width:1200px; margin:0 auto; height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 40px; }
 .logo-mark { display:flex; align-items:center; gap:10px; text-decoration:none; }
-.logo-icon { width:38px; height:38px; background: linear-gradient(135deg, var(--blue-600), var(--blue-900)); border-radius:10px; display:flex; align-items:center; justify-content:center; position:relative; box-shadow:0 2px 8px rgba(29,78,216,0.35); }
-.logo-icon-sr { font-family:var(--font-en); font-weight:900; font-size:13px; color:white; letter-spacing:-0.5px; }
-.logo-icon-dot { position:absolute; top:-3px; right:-3px; width:10px; height:10px; background:var(--orange-500); border-radius:50%; border:2px solid white; }
-.logo-text { display:flex; flex-direction:column; line-height:1.1; }
-.logo-name { font-family:var(--font-en); font-weight:900; font-size:18px; color:var(--blue-900); }
-.logo-name .o { color:var(--orange-500); }
-.logo-tagline { font-family:var(--font-en); font-size:8.5px; color:var(--gray-500); letter-spacing:2px; text-transform:uppercase; }
+.logo-combined { display:flex; align-items:flex-start; gap:6px; }
+.logo-sr-img { height:52px; width:auto; display:block; flex-shrink:0; }
+.logo-text-part { display:flex; flex-direction:column; line-height:1; gap:3px; margin-top:12px; }
+.logo-motive { font-family:'Sora',sans-serif; font-weight:700; font-size:32px; color:#EF8B47; letter-spacing:-0.5px; line-height:1; }
+.logo-tagline { font-family:'Sora',sans-serif; font-size:8px; font-weight:400; color:#A6A6A6; letter-spacing:2.5px; text-transform:uppercase; }
 .nav-menu { display:flex; align-items:center; gap:4px; }
 .nav-menu a { color:var(--gray-700); text-decoration:none; font-size:14px; font-weight:600; padding:8px 14px; border-radius:8px; transition:all 0.15s; }
 .nav-menu a:hover { background:var(--gray-100); color:var(--blue-700); }
@@ -217,13 +215,20 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="navbar-inner">
-    <a href="../preview.html" class="logo-mark">
-      <img src="../srmotive-logo.png" alt="SRMOTIVE" style="height:72px; width:auto;">
+    <a href="../preview.html" class="logo-mark" translate="no">
+      <div class="logo-combined">
+        <img src="../sr-mark.png" alt="SR" class="logo-sr-img">
+        <div class="logo-text-part">
+          <span class="logo-motive">MOTIVE</span>
+          <span class="logo-tagline">Motivating People &amp; Technology</span>
+        </div>
+      </div>
     </a>
     <nav class="nav-menu">
       <a href="../preview.html">홈</a>
       <a href="#features">기능</a>
       <a href="#pricing">가격</a>
+      <a href="../preview.html#about">회사소개</a>
       <a href="#download" class="nav-cta">무료 다운로드</a>
     </nav>
   </div>
@@ -453,7 +458,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>직원 10명 미만 지원</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>인사·급여 전 기능</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
-          <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>2대 PC 설치 가능</li>
+          <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>1대 PC 설치 가능</li>
         </ul>
         <a href="#purchase" class="plan-btn orange">시작하기</a>
       </div>
@@ -479,7 +484,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>직원 30명 미만 지원</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>인사·급여 전 기능</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
-          <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>3대 PC 설치 가능</li>
+          <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>2대 PC 설치 가능</li>
         </ul>
         <a href="#purchase" class="plan-btn blue-btn">시작하기</a>
       </div>
