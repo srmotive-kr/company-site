@@ -488,6 +488,27 @@ footer {
   transition: opacity 0.55s ease, transform 0.55s ease;
 }
 .reveal.visible { opacity: 1; transform: none; }
+
+/* ─── RESPONSIVE (mobile/tablet) ─── */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+@media (max-width: 640px) {
+  .navbar-inner { padding: 0 16px; }
+  .logo-motive { font-size: 22px; }
+  .logo-tagline { display: none; }
+  .nav-menu a:not(.nav-cta) { display: none; }
+  .nav-cta { margin-left: 0; }
+  section { padding: 56px 18px; }
+  .hero-inner { padding: 80px 18px 48px; }
+  .hero-desc { max-width: 100%; }
+  .about-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .about-card { padding: 32px 24px; }
+  .product-card { padding: 28px 22px; }
+  .pricing-card { padding: 26px 20px; }
+  .cta-inner { justify-content: center; text-align: center; }
+  .footer-bottom { justify-content: center; text-align: center; }
+}
 </style>
 </head>
 <body>
@@ -584,7 +605,7 @@ footer {
           </svg>
         </div>
         <span class="product-chip chip-soon">준비 중</span>
-        <h3 class="product-name" style="color:var(--gray-300)">Coming Soon</h3>
+        <h3 class="product-name" style="color:var(--gray-300)">Smart Planner</h3>
         <p class="product-desc">새로운 비즈니스 솔루션을 준비 중입니다. 출시 소식을 기대해 주세요.</p>
       </div>
 
