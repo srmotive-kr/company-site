@@ -93,6 +93,10 @@ section { padding:88px 40px; }
 /* 2행(근태·휴가관리 / 교대근무관리)만 가로폭을 살짝 줄여 가운데 스포트라이트 카드가 조금 더 넓어 보이도록 함 */
 .features-grid > .feature-card:nth-child(4),
 .features-grid > .feature-card:nth-child(6) { grid-column:span 7; }
+/* 2행 3개 카드는 세로 가운데 정렬(1·3행은 위쪽 정렬 유지) */
+.features-grid > .feature-card:nth-child(4),
+.features-grid > .feature-card:nth-child(5),
+.features-grid > .feature-card:nth-child(6) { align-self:center; }
 .feature-card.big:hover { border-color:transparent; }
 .feature-spotlight { display:inline-block; font-family:var(--font-en); font-size:11px; font-weight:700; color:#FDBA74; background:rgba(249,115,22,0.18); border:1px solid rgba(249,115,22,0.4); padding:3px 11px; border-radius:100px; margin-bottom:16px; letter-spacing:0.3px; }
 .feature-icon { width:52px; height:52px; border-radius:14px; margin-bottom:24px; display:flex; align-items:center; justify-content:center; }
