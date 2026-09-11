@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart HR+ 주문 — 플랜/기간 선택</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --blue-900: #1E3A8A; --blue-700: #1D4ED8; --blue-600: #2563EB;
+  --blue-500: #3B82F6; --blue-100: #DBEAFE; --blue-50: #EFF6FF;
+  --orange-500: #F97316; --orange-400: #FB923C;
+  --gray-900: #0F172A; --gray-700: #334155; --gray-600: #475569;
+  --gray-500: #64748B; --gray-300: #CBD5E1;
+  --gray-100: #F1F5F9; --gray-50: #F8FAFC; --white: #FFFFFF;
+  --font-en: 'Sora', sans-serif;
+  --font-ko: 'Noto Sans KR', 'Nunito', sans-serif;
+}
+body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gray-50); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+.navbar { position: sticky; top:0; z-index:100; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-100); height: 68px; }
+.navbar-inner { max-width:1200px; margin:0 auto; height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 40px; }
+.logo-mark { display:flex; align-items:center; text-decoration:none; }
+.brand-logo { height:36px; width:auto; display:block; }
+.nav-back { color:var(--gray-600); text-decoration:none; font-size:14px; font-weight:600; padding:8px 14px; border-radius:8px; transition:all 0.15s; }
+.nav-back:hover { background:var(--gray-100); color:var(--blue-700); }
+
+.wrap { max-width:960px; margin:0 auto; padding:48px 24px 100px; }
+.page-title { font-size:28px; font-weight:900; margin-bottom:8px; }
+.page-sub { color:var(--gray-500); font-size:14px; margin-bottom:40px; }
+
+.section { background:white; border-radius:20px; padding:32px; border:1.5px solid var(--gray-100); margin-bottom:24px; }
+.section-title { font-size:16px; font-weight:800; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+.section-title .num { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:var(--blue-700); color:white; font-size:13px; font-weight:800; flex-shrink:0; }
+
+.field-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:13px; font-weight:700; color:var(--gray-700); }
+.field input, .field-input { padding:12px 14px; border:1.5px solid var(--gray-300); border-radius:10px; font-size:14px; font-family:var(--font-ko); outline:none; transition:border-color 0.2s; }
+.field input:focus, .field-input:focus { border-color:var(--blue-500); box-shadow:0 0 0 3px var(--blue-100); }
+.field-input:disabled { background:var(--gray-100); color:var(--gray-500); cursor:not-allowed; }
+
+.free-label { font-size:13px; font-weight:700; color:var(--gray-700); text-align:left; }
+.otp-row { display:flex; gap:8px; }
+.otp-row .field-input { flex:1; }
+.otp-btn { flex-shrink:0; padding:0 18px; border-radius:10px; border:1.5px solid var(--blue-500); background:white; color:var(--blue-700); font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font-ko); white-space:nowrap; transition:all 0.2s; }
+.otp-btn:hover:not(:disabled) { background:var(--blue-50); }
+.otp-btn:disabled { opacity:0.5; cursor:not-allowed; }
+.otp-btn.verify { background:var(--blue-700); color:white; border-color:var(--blue-700); }
+.otp-btn.verify:hover:not(:disabled) { background:var(--blue-900); }
+.otp-verified { font-size:13px; color:#166534; font-weight:700; text-align:left; margin-top:8px; }
+.otp-msg { margin-top:8px; padding:10px 14px; border-radius:8px; font-size:12.5px; }
+.otp-msg.success { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; }
+.otp-msg.error   { background:#FEF2F2; color:#991B1B; border:1px solid #FECACA; }
+
+.plan-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:700px){ .plan-grid, .field-grid { grid-template-columns:1fr; } .term-grid { grid-template-columns:repeat(3,1fr) !important; } }
+.plan-card { border:2px solid var(--gray-200); border-radius:14px; padding:18px; cursor:pointer; text-align:center; transition:all 0.15s; }
+.plan-card:hover { border-color:var(--blue-300); }
+.plan-card.selected { border-color:var(--blue-700); background:var(--blue-50); }
+.plan-card .name { font-size:16px; font-weight:900; margin-bottom:4px; }
+.plan-card .desc { font-size:12px; color:var(--gray-500); }
+
+.term-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.term-card { border:2px solid var(--gray-200); border-radius:12px; padding:14px 8px; cursor:pointer; text-align:center; transition:all 0.15s; }
+.term-card:hover { border-color:var(--blue-300); }
+.term-card.selected { border-color:var(--orange-500); background:#FFF7ED; }
+.term-card .yr { font-size:15px; font-weight:800; }
+.term-card .note { font-size:11px; color:var(--gray-500); margin-top:2px; }
+
+.price-table { width:100%; border-collapse:collapse; margin-top:16px; font-size:13px; }
+.price-table th, .price-table td { padding:9px 10px; text-align:right; border-bottom:1px solid var(--gray-100); }
+.price-table th:first-child, .price-table td:first-child { text-align:left; }
+.price-table th { color:var(--gray-500); font-weight:700; font-size:12px; }
+.price-table td { font-variant-numeric:tabular-nums; }
+
+.summary { display:flex; justify-content:space-between; align-items:center; padding-top:16px; margin-top:8px; border-top:2px solid var(--gray-900); }
+.summary .label { font-size:14px; font-weight:700; color:var(--gray-600); }
+.summary .amount { font-size:28px; font-weight:900; color:var(--blue-700); font-variant-numeric:tabular-nums; }
+.summary .amount span { font-size:14px; color:var(--gray-500); font-weight:600; }
+
+.notice { background:#FEF2F2; border:1.5px solid #FECACA; border-radius:12px; padding:16px 18px; font-size:13px; color:#991B1B; font-weight:700; line-height:1.7; margin-bottom:24px; }
+
+.pay-btn { width:100%; background:var(--blue-700); color:white; padding:16px; border-radius:14px; border:none; font-size:16px; font-weight:800; cursor:pointer; font-family:var(--font-ko); transition:all 0.2s; }
+.pay-btn:hover { background:var(--blue-900); transform:translateY(-1px); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="./index.html" class="logo-mark" translate="no">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="515 663 2950 775" class="brand-logo" aria-label="SRMOTIVE">
+        <path fill="#2B5EA7" fill-rule="evenodd" transform="matrix(1.83697e-16 1 1 -1.83697e-16 542 810)" d="M0 519 0 178.936C-3.30379e-14 80.1125 80.1126 0 178.937 0L184.497 0C283.321-3.30378e-14 363.433 80.1125 363.433 178.936L363.433 281.324 406 281.324 304.5 281.324 203 281.324 245.567 281.324 245.567 178.936C245.567 145.208 218.225 117.866 184.497 117.866L178.937 117.866C145.208 117.866 117.866 145.208 117.866 178.936L117.866 519Z"/>
+        <path fill="#2B5EA7" fill-rule="evenodd" d="M1084 810 1421.86 810C1521.9 810 1603 891.099 1603 991.139L1603 991.139C1603 1091.18 1521.9 1172.28 1421.86 1172.28L1114.09 1172.28 1114.09 1215 1114.09 1113.75 1114.09 1012.5 1114.09 1055.22 1421.86 1055.22C1457.25 1055.22 1485.94 1026.53 1485.94 991.139L1485.94 991.139C1485.94 955.748 1457.25 927.057 1421.86 927.057L1084 927.057Z"/>
+        <path fill="#2B5EA7" fill-rule="evenodd" transform="matrix(1 -1.22465e-16 -1.22465e-16 -1 1114 1418)" d="M0 144.5 234 0 468 0 0 289Z"/>
+        <path fill="#2B5EA7" fill-rule="evenodd" transform="matrix(-6.12323e-17 -1 -1 6.12323e-17 1055 1418)" d="M0 520 0 179.707C-3.31015e-14 80.4574 80.4574 0 179.707 0L183.09 0C282.34-3.31015e-14 362.797 80.4574 362.797 179.707L362.797 232.981 405 232.981 303.75 232.981 202.5 232.981 244.703 232.981 244.703 179.707C244.703 145.679 217.118 118.094 183.09 118.094L179.707 118.094C145.679 118.094 118.094 145.678 118.094 179.706L118.094 520Z"/>
+        <polyline fill="none" stroke="#E53E3E" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" points="998,748 1042,806 1132,683"/>
+        <text fill="#EF8B47" font-family="'Sora','Century Gothic',sans-serif" font-weight="700" font-size="454" x="1591" y="1413">MOTIVE</text>
+      </svg>
+    </a>
+    <a href="./index.html#pricing" class="nav-back">← 가격표로 돌아가기</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1 class="page-title">주문 정보 입력</h1>
+  <p class="page-sub">플랜과 결제 기간을 선택하시면 결제 금액이 자동으로 계산됩니다.</p>
+
+  <div class="section">
+    <div class="section-title"><span class="num">1</span>신청자 정보</div>
+    <div class="field-grid">
+      <div class="field"><label>담당자 이름</label><input id="ord-name" type="text" placeholder="담당자 이름"></div>
+      <div class="field"><label>사업자등록번호</label><input id="ord-bizno" type="text" placeholder="000-00-00000" inputmode="numeric" maxlength="12"></div>
+      <div class="field" style="grid-column:1 / -1"><label>회사명</label><input id="ord-company" type="text" placeholder="회사명"></div>
+    </div>
+
+    <label class="free-label" style="display:block;margin:16px 0 -2px">이메일 인증 *</label>
+    <div class="otp-row">
+      <input id="ord-email" class="field-input" type="email" placeholder="이메일 주소">
+      <button class="otp-btn" id="send-otp-btn" type="button">인증번호 받기</button>
+      <span class="otp-row" id="otp-code-row" style="display:none">
+        <input id="ord-otp-code" class="field-input" type="text" inputmode="numeric" placeholder="인증번호를 입력하세요" maxlength="6">
+        <button class="otp-btn verify" id="verify-otp-btn" type="button">인증번호 확인</button>
+      </span>
+    </div>
+    <div id="otp-status"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">2</span>플랜 선택</div>
+    <div class="plan-grid" id="plan-grid">
+      <div class="plan-card" data-plan="STARTER">
+        <div class="name">STARTER</div>
+        <div class="desc">10명 미만 · PC 1대</div>
+      </div>
+      <div class="plan-card" data-plan="PRO">
+        <div class="name">PRO</div>
+        <div class="desc">30명 미만 · PC 2대</div>
+      </div>
+      <div class="plan-card" data-plan="ENTERPRISE">
+        <div class="name">ENTERPRISE</div>
+        <div class="desc">인원 무제한 · PC 4대</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">3</span>결제 기간 선택</div>
+    <div class="term-grid" id="term-grid">
+      <div class="term-card" data-term="1"><div class="yr">1년</div><div class="note">정상 흐름</div></div>
+      <div class="term-card" data-term="2"><div class="yr">2년</div><div class="note">2년차 할인↑</div></div>
+      <div class="term-card" data-term="3"><div class="yr">3년</div><div class="note">2·3년차 할인↑</div></div>
+      <div class="term-card" data-term="4"><div class="yr">4년</div><div class="note">전 기간 최대할인</div></div>
+      <div class="term-card" data-term="5"><div class="yr">5년</div><div class="note">전 기간 최대할인</div></div>
+    </div>
+
+    <table class="price-table" id="price-table"></table>
+
+    <div class="summary">
+      <span class="label">총 결제 금액</span>
+      <span class="amount" id="total-amount">-<span> 원</span></span>
+    </div>
+  </div>
+
+  <p class="notice">
+    ※ 발송 이후 라이선스 키 노출로 인하여 교환 및 반품이 불가합니다.<br>
+    FREE 플랜을 먼저 사용해 보신 후 구매를 신중히 결정하세요.
+  </p>
+
+  <button class="pay-btn" id="pay-btn">결제하기 →</button>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://nwrcbcoqcsactnskdotc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_fJRse4JPny8TchCb-MVCeg_DYMnnn7z';
+const HEADERS = { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
+
+// ─── 가격 정책(2026-09-11 확정) ───────────────────────────
+// 1년차 = 프로모션가(고정). 2년차 이후 할인율은 결제기간(term)에 따라 결정:
+//   term=2 → 기본할인율-20%p, term=3 → 기본할인율-10%p, term≥4 → 기본할인율과 동일(상한).
+const PRICING = {
+  STARTER:    { name: 'STARTER',    normal: 33000, promo: 9900,  baseDiscount: 0.70 },
+  PRO:        { name: 'PRO',        normal: 55000, promo: 19800, baseDiscount: 0.64 },
+  ENTERPRISE: { name: 'ENTERPRISE', normal: 99000, promo: 39600, baseDiscount: 0.60 },
+};
+
+function yearRate(plan, term, yearIndex) {
+  if (yearIndex === 1) return PRICING[plan].baseDiscount;
+  if (term === 2) return PRICING[plan].baseDiscount - 0.20;
+  if (term === 3) return PRICING[plan].baseDiscount - 0.10;
+  return PRICING[plan].baseDiscount; // term >= 4
+}
+
+function yearPrice(plan, term, yearIndex) {
+  const p = PRICING[plan];
+  return Math.round(p.normal * (1 - yearRate(plan, term, yearIndex)));
+}
+
+function fmt(n) { return n.toLocaleString('ko-KR'); }
+
+let state = { plan: null, term: 1 };
+
+const planGrid = document.getElementById('plan-grid');
+const termGrid = document.getElementById('term-grid');
+const priceTable = document.getElementById('price-table');
+const totalAmountEl = document.getElementById('total-amount');
+
+function selectPlan(plan) {
+  state.plan = plan;
+  planGrid.querySelectorAll('.plan-card').forEach(c => c.classList.toggle('selected', c.dataset.plan === plan));
+  render();
+}
+function selectTerm(term) {
+  state.term = term;
+  termGrid.querySelectorAll('.term-card').forEach(c => c.classList.toggle('selected', Number(c.dataset.term) === term));
+  render();
+}
+
+planGrid.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => selectPlan(c.dataset.plan)));
+termGrid.querySelectorAll('.term-card').forEach(c => c.addEventListener('click', () => selectTerm(Number(c.dataset.term))));
+
+function render() {
+  if (!state.plan) {
+    priceTable.innerHTML = '';
+    totalAmountEl.innerHTML = '플랜을 먼저 선택해주세요<span></span>';
+    return;
+  }
+  const rows = [];
+  let total = 0;
+  for (let y = 1; y <= state.term; y++) {
+    const price = yearPrice(state.plan, state.term, y);
+    const rate = Math.round(yearRate(state.plan, state.term, y) * 100);
+    total += price;
+    rows.push(`<tr><td>${y}년차</td><td>${rate}% 할인</td><td>${fmt(price)}원</td></tr>`);
+  }
+  priceTable.innerHTML = `
+    <tr><th>연차</th><th>할인율</th><th>금액</th></tr>
+    ${rows.join('')}
+  `;
+  totalAmountEl.innerHTML = `${fmt(total)}<span> 원 (${state.term}년 합계)</span>`;
+}
+
+// URL 쿼리스트링(?plan=STARTER)으로 진입 시 해당 플랜 미리 선택
+const params = new URLSearchParams(location.search);
+const presetPlan = params.get('plan');
+if (presetPlan && PRICING[presetPlan]) selectPlan(presetPlan);
+selectTerm(1);
+
+// 사업자등록번호 입력 중 자동 하이픈 포맷팅(FREE 신청 폼과 동일 패턴)
+document.getElementById('ord-bizno').addEventListener('input', (e) => {
+  const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+  let formatted = digits;
+  if (digits.length > 5) formatted = digits.slice(0, 3) + '-' + digits.slice(3, 5) + '-' + digits.slice(5);
+  else if (digits.length > 3) formatted = digits.slice(0, 3) + '-' + digits.slice(3);
+  e.target.value = formatted;
+});
+
+// ─── 이메일 인증(OTP) — FREE 신청 폼과 동일한 엣지함수 재사용 ───────────
+let orderEmailVerified = false;
+let orderVerifiedEmail = '';
+
+const ordEmailInput = document.getElementById('ord-email');
+const ordSendOtpBtn  = document.getElementById('send-otp-btn');
+const ordOtpCodeRow  = document.getElementById('otp-code-row');
+const ordOtpCodeInput = document.getElementById('ord-otp-code');
+const ordVerifyOtpBtn = document.getElementById('verify-otp-btn');
+const ordOtpStatus    = document.getElementById('otp-status');
+
+function resetOrderEmailVerification() {
+  orderEmailVerified = false;
+  orderVerifiedEmail = '';
+  ordEmailInput.disabled = false;
+  ordOtpCodeRow.style.display = 'none';
+  ordOtpCodeInput.value = '';
+  ordSendOtpBtn.style.display = '';
+  ordSendOtpBtn.textContent = '인증번호 받기';
+  ordSendOtpBtn.disabled = false;
+  ordOtpStatus.innerHTML = '';
+}
+
+ordEmailInput.addEventListener('input', () => {
+  if (orderEmailVerified) resetOrderEmailVerification();
+});
+
+ordSendOtpBtn.addEventListener('click', async () => {
+  const emailVal = ordEmailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailVal)) {
+    ordOtpStatus.innerHTML = '<p class="otp-msg error">⚠ 올바른 이메일 주소를 입력해주세요.</p>';
+    return;
+  }
+  ordSendOtpBtn.disabled = true;
+  ordSendOtpBtn.textContent = '발송 중...';
+  ordOtpStatus.innerHTML = '';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/send-free-signup-otp', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({ email: emailVal }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '인증번호 발송에 실패했습니다.');
+    ordEmailInput.disabled = true;
+    ordOtpCodeRow.style.display = 'flex';
+    ordSendOtpBtn.textContent = '재발송';
+    ordSendOtpBtn.disabled = false;
+    ordOtpStatus.innerHTML = '<p class="otp-msg success">✓ 인증번호를 발송했습니다. 메일함(스팸 포함)을 확인해주세요.</p>';
+    ordOtpCodeInput.focus();
+  } catch (err) {
+    ordSendOtpBtn.disabled = false;
+    ordSendOtpBtn.textContent = '인증번호 받기';
+    ordOtpStatus.innerHTML = `<p class="otp-msg error">⚠ ${err.message}</p>`;
+  }
+});
+
+ordVerifyOtpBtn.addEventListener('click', async () => {
+  const emailVal = ordEmailInput.value.trim();
+  const code = ordOtpCodeInput.value.trim();
+  if (!code) {
+    ordOtpStatus.innerHTML = '<p class="otp-msg error">⚠ 인증번호를 입력해주세요.</p>';
+    return;
+  }
+  ordVerifyOtpBtn.disabled = true;
+  ordVerifyOtpBtn.textContent = '확인 중...';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/verify-free-signup-otp', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({ email: emailVal, code }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '인증에 실패했습니다.');
+    orderEmailVerified = true;
+    orderVerifiedEmail = emailVal;
+    ordOtpCodeRow.style.display = 'none';
+    ordSendOtpBtn.style.display = 'none';
+    ordOtpStatus.innerHTML = '<p class="otp-verified">✓ 이메일 인증 완료</p>';
+  } catch (err) {
+    ordOtpStatus.innerHTML = `<p class="otp-msg error">⚠ ${err.message}</p>`;
+  } finally {
+    ordVerifyOtpBtn.disabled = false;
+    ordVerifyOtpBtn.textContent = '인증번호 확인';
+  }
+});
+
+// 결제하기 — 아직 PG 연동 전이라 안내만 표시.
+// TODO(포트원 연동 시): 신청자 정보 + state.plan + state.term + 계산된 total +
+// orderVerifiedEmail을 license_key 선생성 API(PENDING)에 실어 보낸 뒤 PG 결제창을 호출한다.
+// 이때도 request-free-license와 마찬가지로 서버 쪽에서 이메일 인증 완료 여부를
+// 다시 확인해야 한다(프론트 우회 방지) — free_signup_email_otp 테이블 그대로 재사용 가능.
+document.getElementById('pay-btn').addEventListener('click', () => {
+  if (!state.plan) { alert('플랜을 선택해주세요.'); return; }
+  const name = document.getElementById('ord-name').value.trim();
+  const bizNoDigits = document.getElementById('ord-bizno').value.replace(/\D/g, '');
+  const company = document.getElementById('ord-company').value.trim();
+  if (!name || bizNoDigits.length !== 10 || !company) {
+    alert('신청자 정보를 모두 정확히 입력해주세요.');
+    return;
+  }
+  if (!orderEmailVerified || ordEmailInput.value.trim() !== orderVerifiedEmail) {
+    alert('이메일 인증을 먼저 완료해주세요.');
+    return;
+  }
+  alert('결제 페이지를 준비중입니다. 이메일(SRMOTIVE@DAUM.NET)로 문의주시면 안내드리겠습니다.');
+});
+</script>
+
+</body>
+</html>

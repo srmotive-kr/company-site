@@ -202,6 +202,16 @@ section { padding:88px 40px; }
 .form-msg { display:none; margin-top:12px; padding:12px 16px; border-radius:10px; font-size:13px; line-height:1.6; text-align:left; }
 .form-msg.success { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; }
 .form-msg.error   { background:#FEF2F2; color:#991B1B; border:1px solid #FECACA; }
+.free-label { font-size:13px; font-weight:700; color:var(--gray-700); text-align:left; margin:2px 0 -2px; }
+.otp-row { display:flex; gap:8px; }
+.otp-row .free-input { flex:1; }
+.free-input:disabled { background:var(--gray-100); color:var(--gray-500); cursor:not-allowed; }
+.otp-btn { flex-shrink:0; padding:0 18px; border-radius:12px; border:1.5px solid var(--blue-500); background:white; color:var(--blue-700); font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font-ko); white-space:nowrap; transition:all 0.2s; }
+.otp-btn:hover:not(:disabled) { background:var(--blue-50); }
+.otp-btn:disabled { opacity:0.5; cursor:not-allowed; }
+.otp-btn.verify { background:var(--blue-700); color:white; border-color:var(--blue-700); }
+.otp-btn.verify:hover:not(:disabled) { background:var(--blue-900); }
+.otp-verified { font-size:13px; color:#166534; font-weight:700; text-align:left; }
 .license-form { display:flex; flex-direction:column; gap:10px; }
 .license-input { width:100%; padding:13px 16px; border:1.5px solid var(--gray-300); border-radius:12px; font-size:14px; font-family:var(--font-ko); color:var(--gray-900); transition:border-color 0.2s; outline:none; box-sizing:border-box; }
 .license-input:focus { border-color:var(--blue-500); box-shadow:0 0 0 3px var(--blue-100); }
@@ -637,7 +647,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>1대 PC 설치 가능</li>
         </ul>
-        <a href="#" class="plan-btn orange js-coming-soon">시작하기</a>
+        <a href="./order.html?plan=STARTER" class="plan-btn orange">시작하기</a>
       </div>
 
       <!-- PRO -->
@@ -663,7 +673,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>2대 PC 설치 가능</li>
         </ul>
-        <a href="#" class="plan-btn blue-btn js-coming-soon">시작하기</a>
+        <a href="./order.html?plan=PRO" class="plan-btn blue-btn">시작하기</a>
       </div>
 
       <!-- ENTERPRISE -->
@@ -688,13 +698,16 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#64748B"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#64748B"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>4대 PC 설치 가능</li>
         </ul>
-        <a href="#" class="plan-btn outline-btn js-coming-soon">시작하기</a>
+        <a href="./order.html?plan=ENTERPRISE" class="plan-btn outline-btn">시작하기</a>
       </div>
 
     </div>
     <p class="pricing-footnote">
       ※ 첫해 한정 특별 할인가는 신규 구매 고객에게 적용됩니다. 갱신 시 정상가 적용.<br>
       ※ FREE 라이선스는 아래 신청 폼을 통해 이메일로 발급됩니다.
+    </p>
+    <p class="pricing-footnote" style="color:#DC2626;font-weight:700">
+      ※ 발송 이후 라이선스 키 노출로 인하여 교환 및 반품이 불가합니다. FREE 플랜을 먼저 사용해 보신 후 구매를 신중히 결정하세요.
     </p>
   </div>
 </section>
@@ -713,9 +726,21 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
         <h2>FREE 플랜 신청</h2>
         <p>아래 정보를 입력하시면 라이선스 키를 이메일로 바로 보내드립니다.<br>직원 5명 미만, 모든 기능 무료.</p>
         <form class="free-form" id="free-form" autocomplete="off">
-          <input id="free-name"    class="free-input" type="text"  placeholder="담당자 이름"  required>
-          <input id="free-company" class="free-input" type="text"  placeholder="회사명"        required>
-          <input id="free-email"   class="free-input" type="email" placeholder="이메일 주소"  required>
+          <input id="free-name"       class="free-input" type="text"  placeholder="담당자 이름"  required>
+          <input id="free-bizno"      class="free-input" type="text"  placeholder="사업자등록번호 (000-00-00000)" inputmode="numeric" maxlength="12" required>
+          <input id="free-company"    class="free-input" type="text"  placeholder="회사명"        required>
+
+          <label class="free-label">이메일 인증 *</label>
+          <div class="otp-row">
+            <input id="free-email" class="free-input" type="email" placeholder="이메일 주소" required>
+            <button class="otp-btn" id="send-otp-btn" type="button">인증번호 받기</button>
+          </div>
+          <div class="otp-row" id="otp-code-row" style="display:none">
+            <input id="free-otp-code" class="free-input" type="text" inputmode="numeric" placeholder="인증번호를 입력하세요" maxlength="6">
+            <button class="otp-btn verify" id="verify-otp-btn" type="button">인증번호 확인</button>
+          </div>
+          <div id="otp-status"></div>
+
           <button class="free-submit" id="free-submit" type="submit">라이선스 키 받기 →</button>
         </form>
         <div class="form-msg" id="free-msg"></div>
@@ -939,13 +964,8 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// 유료 플랜 "시작하기" — 결제 페이지 준비중 안내(인라인 onclick 3중 반복 대신 공용 리스너로 통일)
-document.querySelectorAll('.js-coming-soon').forEach(a => {
-  a.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('결제 페이지를 준비중입니다. 이메일(SRMOTIVE@DAUM.NET)로 문의주시면 안내드리겠습니다.');
-  });
-});
+// 유료 플랜 "시작하기" — 이제 order.html(주문 상세페이지)로 실제 이동한다
+// (결제 API 호출/교환·반품 고지는 그 페이지의 "결제하기" 버튼에서 처리).
 
 // FAQ accordion
 document.querySelectorAll('.faq-q').forEach(btn => {
@@ -958,10 +978,120 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 });
 
 // ─── FREE 플랜 신청 폼 ─────────────────────────────────
+// 사업자등록번호 입력 중 자동으로 000-00-00000 형식으로 하이픈 삽입
+document.getElementById('free-bizno').addEventListener('input', (e) => {
+  const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+  let formatted = digits;
+  if (digits.length > 5) formatted = digits.slice(0, 3) + '-' + digits.slice(3, 5) + '-' + digits.slice(5);
+  else if (digits.length > 3) formatted = digits.slice(0, 3) + '-' + digits.slice(3);
+  e.target.value = formatted;
+});
+
+// ─── 이메일 인증(OTP) ───────────────────────────────
+let freeEmailVerified = false;
+let verifiedEmail = '';
+
+const emailInput   = document.getElementById('free-email');
+const sendOtpBtn    = document.getElementById('send-otp-btn');
+const otpCodeRow    = document.getElementById('otp-code-row');
+const otpCodeInput  = document.getElementById('free-otp-code');
+const verifyOtpBtn  = document.getElementById('verify-otp-btn');
+const otpStatus     = document.getElementById('otp-status');
+
+function resetEmailVerification() {
+  freeEmailVerified = false;
+  verifiedEmail = '';
+  emailInput.disabled = false;
+  otpCodeRow.style.display = 'none';
+  otpCodeInput.value = '';
+  sendOtpBtn.style.display = '';
+  sendOtpBtn.textContent = '인증번호 받기';
+  sendOtpBtn.disabled = false;
+  otpStatus.innerHTML = '';
+}
+
+// 이메일을 인증 후 다시 바꾸면(오타 발견 등) 인증 상태를 초기화한다.
+emailInput.addEventListener('input', () => {
+  if (freeEmailVerified) resetEmailVerification();
+});
+
+sendOtpBtn.addEventListener('click', async () => {
+  const emailVal = emailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailVal)) {
+    otpStatus.innerHTML = '<p class="form-msg error" style="display:block;margin-top:8px">⚠ 올바른 이메일 주소를 입력해주세요.</p>';
+    return;
+  }
+  sendOtpBtn.disabled = true;
+  sendOtpBtn.textContent = '발송 중...';
+  otpStatus.innerHTML = '';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/send-free-signup-otp', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({ email: emailVal }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '인증번호 발송에 실패했습니다.');
+    emailInput.disabled = true;
+    otpCodeRow.style.display = 'flex';
+    sendOtpBtn.textContent = '재발송';
+    sendOtpBtn.disabled = false;
+    otpStatus.innerHTML = '<p class="form-msg success" style="display:block;margin-top:8px">✓ 인증번호를 발송했습니다. 메일함(스팸 포함)을 확인해주세요.</p>';
+    otpCodeInput.focus();
+  } catch (err) {
+    sendOtpBtn.disabled = false;
+    sendOtpBtn.textContent = '인증번호 받기';
+    otpStatus.innerHTML = `<p class="form-msg error" style="display:block;margin-top:8px">⚠ ${err.message}</p>`;
+  }
+});
+
+verifyOtpBtn.addEventListener('click', async () => {
+  const emailVal = emailInput.value.trim();
+  const code = otpCodeInput.value.trim();
+  if (!code) {
+    otpStatus.innerHTML = '<p class="form-msg error" style="display:block;margin-top:8px">⚠ 인증번호를 입력해주세요.</p>';
+    return;
+  }
+  verifyOtpBtn.disabled = true;
+  verifyOtpBtn.textContent = '확인 중...';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/verify-free-signup-otp', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({ email: emailVal, code }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '인증에 실패했습니다.');
+    freeEmailVerified = true;
+    verifiedEmail = emailVal;
+    otpCodeRow.style.display = 'none';
+    sendOtpBtn.style.display = 'none';
+    otpStatus.innerHTML = '<p class="otp-verified">✓ 이메일 인증 완료</p>';
+  } catch (err) {
+    otpStatus.innerHTML = `<p class="form-msg error" style="display:block;margin-top:8px">⚠ ${err.message}</p>`;
+  } finally {
+    verifyOtpBtn.disabled = false;
+    verifyOtpBtn.textContent = '인증번호 확인';
+  }
+});
+
 document.getElementById('free-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('free-submit');
   const msg = document.getElementById('free-msg');
+  const bizNoDigits = document.getElementById('free-bizno').value.replace(/\D/g, '');
+  if (bizNoDigits.length !== 10) {
+    msg.className = 'form-msg error';
+    msg.textContent = '⚠ 사업자등록번호는 숫자 10자리로 입력해주세요.';
+    msg.style.display = 'block';
+    return;
+  }
+  if (!freeEmailVerified || emailInput.value.trim() !== verifiedEmail) {
+    msg.className = 'form-msg error';
+    msg.textContent = '⚠ 이메일 인증을 먼저 완료해주세요.';
+    msg.style.display = 'block';
+    return;
+  }
+  const emailVal = verifiedEmail;
   btn.disabled = true;
   btn.textContent = '처리 중...';
   msg.style.display = 'none';
@@ -971,7 +1101,8 @@ document.getElementById('free-form').addEventListener('submit', async (e) => {
       body: JSON.stringify({
         contact_name: document.getElementById('free-name').value.trim(),
         company_name: document.getElementById('free-company').value.trim(),
-        email:        document.getElementById('free-email').value.trim(),
+        email:        emailVal,
+        biz_no:       bizNoDigits,
       }),
     });
     const data = await res.json();
@@ -982,6 +1113,7 @@ document.getElementById('free-form').addEventListener('submit', async (e) => {
       : '✓ 라이선스 키를 이메일로 발송했습니다. 메일함(스팸 포함)을 확인해주세요.';
     msg.style.display = 'block';
     e.target.reset();
+    resetEmailVerification();
   } catch (err) {
     msg.className = 'form-msg error';
     msg.textContent = '⚠ ' + err.message;
