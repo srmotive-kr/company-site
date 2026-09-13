@@ -234,7 +234,6 @@ section { padding: 88px 40px; }
 }
 .chip-live { background: var(--blue-pale); color: var(--blue); }
 .chip-soon { background: var(--gray-100); color: var(--gray-500); }
-.chip-preview { background: var(--orange-pale); color: var(--orange-dark); }
 .product-name {
   font-family: var(--font-en);
   font-size: 22px; font-weight: 700; color: var(--gray-900);
@@ -442,7 +441,7 @@ footer {
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="navbar-inner">
-    <a href="./preview.html" class="logo-mark">
+    <a href="/" class="logo-mark">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="515 663 2950 775" class="brand-logo" aria-label="SRMOTIVE">
         <path fill="#2B5EA7" fill-rule="evenodd" transform="matrix(1.83697e-16 1 1 -1.83697e-16 542 810)" d="M0 519 0 178.936C-3.30379e-14 80.1125 80.1126 0 178.937 0L184.497 0C283.321-3.30378e-14 363.433 80.1125 363.433 178.936L363.433 281.324 406 281.324 304.5 281.324 203 281.324 245.567 281.324 245.567 178.936C245.567 145.208 218.225 117.866 184.497 117.866L178.937 117.866C145.208 117.866 117.866 145.208 117.866 178.936L117.866 519Z"/>
         <path fill="#2B5EA7" fill-rule="evenodd" d="M1084 810 1421.86 810C1521.9 810 1603 891.099 1603 991.139L1603 991.139C1603 1091.18 1521.9 1172.28 1421.86 1172.28L1114.09 1172.28 1114.09 1215 1114.09 1113.75 1114.09 1012.5 1114.09 1055.22 1421.86 1055.22C1457.25 1055.22 1485.94 1026.53 1485.94 991.139L1485.94 991.139C1485.94 955.748 1457.25 927.057 1421.86 927.057L1084 927.057Z"/>
@@ -457,7 +456,7 @@ footer {
       <a href="./smart-hr-plus/index.html#pricing">가격</a>
       <a href="#about">회사소개</a>
       <a href="mailto:srmotive@daum.net">문의</a>
-      <a href="./smart-hr-plus/index.html" class="nav-cta">Smart HR+ 받기</a>
+      <a href="./smart-hr-plus/" class="nav-cta">Smart HR+ 받기</a>
     </nav>
   </div>
 </nav>
@@ -522,28 +521,17 @@ footer {
         </span>
       </a>
 
-      <a href="./smart-planner-plus/index.html" class="product-card live reveal" style="transition-delay:0.1s">
-        <div class="product-icon-wrap" style="background:none">
-          <img src="./smart-planner-plus/app-icon.png" alt="Smart Planner+ 아이콘" width="52" height="52" style="width:100%;height:100%;border-radius:12px;display:block;">
-        </div>
-        <span class="product-chip chip-preview">사전 안내</span>
-        <h3 class="product-name">Smart Planner+</h3>
-        <p class="product-desc">
-          생애재무설계 전문 소프트웨어.<br>
-          자산·재무목표 설계부터 리모델링 시뮬레이션, 고객관리(CRM)까지.<br>
-          본인 1인 설계는 무료로 사용 가능합니다.
-        </p>
-        <div class="product-price">
-          <span class="product-price-label">예정가</span>
-          <span class="product-price-value">무료 ~ ₩39,600<span>/년</span></span>
-        </div>
-        <span class="product-arrow">
-          자세히 보기
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+      <div class="product-card coming reveal" style="transition-delay:0.1s">
+        <div class="product-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+            <rect x="5" y="5" width="18" height="18" rx="4" stroke="#CBD5E1" stroke-width="2"/>
+            <path d="M14 10v8M10 14h8" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
           </svg>
-        </span>
-      </a>
+        </div>
+        <span class="product-chip chip-soon">준비 중</span>
+        <h3 class="product-name" style="color:var(--gray-300)">Smart Planner</h3>
+        <p class="product-desc">새로운 비즈니스 솔루션을 준비 중입니다. 출시 소식을 기대해 주세요.</p>
+      </div>
 
     </div>
   </div>
@@ -686,7 +674,7 @@ footer {
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 주식회사 에스알모티브. All rights reserved.</span>
       <div class="footer-links">
-        <a href="./smart-hr-plus/index.html">Smart HR+</a>
+        <a href="./smart-hr-plus/">Smart HR+</a>
         <a href="mailto:srmotive@daum.net">문의하기</a>
       </div>
     </div>
