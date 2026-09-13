@@ -71,6 +71,18 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
 .term-card.selected { border-color:var(--orange-500); background:#FFF7ED; }
 .term-card .yr { font-size:15px; font-weight:800; }
 .term-card .note { font-size:11px; color:var(--gray-500); margin-top:2px; }
+.term-card .expiry { font-size:10px; color:var(--gray-400); margin-top:3px; }
+
+/* §2.3.1 — 선택 마커(색상 대비만으로 판단하기 어려운 경우를 위한 시각 보조) */
+.card-radio { width:16px; height:16px; border-radius:50%; border:2px solid var(--gray-300); margin:0 auto 8px; position:relative; transition:all 0.15s; }
+.plan-card.selected .card-radio { border-color:var(--blue-700); }
+.plan-card.selected .card-radio::after { content:''; position:absolute; inset:3px; border-radius:50%; background:var(--blue-700); }
+.term-card.selected .card-radio { border-color:var(--orange-500); }
+.term-card.selected .card-radio::after { content:''; position:absolute; inset:3px; border-radius:50%; background:var(--orange-500); }
+
+.revival-badge { display:inline-block; background:#FFF7ED; color:#9A5B13; border:1px solid #F0C48A; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700; margin-bottom:14px; }
+.term-overflow-note { grid-column:1/-1; font-size:12.5px; color:var(--gray-600); background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:10px; padding:10px 14px; margin-top:2px; line-height:1.6; }
+.hook-note { font-size:12.5px; color:var(--blue-700); background:var(--blue-50); border:1px solid var(--blue-100); border-radius:10px; padding:10px 14px; margin-top:14px; font-weight:700; }
 
 .price-table { width:100%; border-collapse:collapse; margin-top:16px; font-size:13px; }
 .price-table th, .price-table td { padding:9px 10px; text-align:right; border-bottom:1px solid var(--gray-100); }
@@ -86,7 +98,27 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
 .notice { background:#FEF2F2; border:1.5px solid #FECACA; border-radius:12px; padding:16px 18px; font-size:13px; color:#991B1B; font-weight:700; line-height:1.7; margin-bottom:24px; }
 
 .pay-btn { width:100%; background:var(--blue-700); color:white; padding:16px; border-radius:14px; border:none; font-size:16px; font-weight:800; cursor:pointer; font-family:var(--font-ko); transition:all 0.2s; }
-.pay-btn:hover { background:var(--blue-900); transform:translateY(-1px); }
+.pay-btn:hover:not(:disabled) { background:var(--blue-900); transform:translateY(-1px); }
+.pay-btn:disabled { opacity:0.6; cursor:not-allowed; }
+
+.consent-row { display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--gray-700); text-align:left; margin-top:14px; cursor:pointer; line-height:1.5; }
+.consent-checkbox { margin-top:2px; width:16px; height:16px; flex-shrink:0; accent-color:var(--blue-700); cursor:pointer; }
+.consent-link { color:var(--blue-700); text-decoration:underline; font-weight:700; }
+.consent-modal-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.55); align-items:center; justify-content:center; z-index:1000; padding:20px; }
+.consent-modal-overlay.open { display:flex; }
+.consent-modal { background:white; border-radius:16px; max-width:480px; width:100%; max-height:80vh; overflow:hidden; display:flex; flex-direction:column; text-align:left; }
+.consent-modal-header { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--gray-100); }
+.consent-modal-header h3 { font-size:16px; font-weight:800; color:var(--gray-900); }
+.consent-modal-close { background:none; border:none; font-size:22px; line-height:1; cursor:pointer; color:var(--gray-500); padding:4px; }
+.consent-modal-body { padding:20px 24px; overflow-y:auto; font-size:13px; color:var(--gray-700); line-height:1.7; }
+.consent-modal-body p { margin-bottom:14px; }
+.consent-table { width:100%; border-collapse:collapse; }
+.consent-table th { text-align:left; padding:10px 12px 10px 0; width:104px; vertical-align:top; color:var(--gray-900); font-weight:700; font-size:12.5px; white-space:nowrap; }
+.consent-table td { padding:10px 0; vertical-align:top; border-top:1px solid var(--gray-100); }
+.consent-table tr:first-child td { border-top:none; }
+.consent-modal-footer { padding:16px 24px; border-top:1px solid var(--gray-100); text-align:right; }
+.consent-modal-ok { background:var(--blue-700); color:white; border:none; padding:10px 22px; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font-ko); }
+.consent-modal-ok:hover { background:var(--blue-900); }
 </style>
 </head>
 <body>
@@ -108,10 +140,16 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
 </nav>
 
 <div class="wrap">
-  <h1 class="page-title">주문 정보 입력</h1>
-  <p class="page-sub">플랜과 결제 기간을 선택하시면 결제 금액이 자동으로 계산됩니다.</p>
+  <h1 class="page-title" id="page-title">주문 정보 입력</h1>
+  <p class="page-sub" id="page-sub">플랜과 결제 기간을 선택하시면 결제 금액이 자동으로 계산됩니다.</p>
 
-  <div class="section">
+  <div class="section" id="current-license-section" style="display:none">
+    <div class="section-title"><span class="num">i</span>현재 라이선스</div>
+    <p id="current-license-summary" style="font-size:13px;color:var(--gray-600)"></p>
+    <div id="revival-badge-slot"></div>
+  </div>
+
+  <div class="section" id="ord-applicant-section">
     <div class="section-title"><span class="num">1</span>신청자 정보</div>
     <div class="field-grid">
       <div class="field"><label>담당자 이름</label><input id="ord-name" type="text" placeholder="담당자 이름"></div>
@@ -129,20 +167,28 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
       </span>
     </div>
     <div id="otp-status"></div>
+
+    <label class="consent-row">
+      <input type="checkbox" id="ord-consent" class="consent-checkbox">
+      <span><a href="#" id="ord-consent-link" class="consent-link">개인정보 수집 및 이용</a>에 동의합니다.</span>
+    </label>
   </div>
 
   <div class="section">
     <div class="section-title"><span class="num">2</span>플랜 선택</div>
     <div class="plan-grid" id="plan-grid">
       <div class="plan-card" data-plan="STARTER">
+        <div class="card-radio"></div>
         <div class="name">STARTER</div>
         <div class="desc">10명 미만 · PC 1대</div>
       </div>
       <div class="plan-card" data-plan="PRO">
+        <div class="card-radio"></div>
         <div class="name">PRO</div>
         <div class="desc">30명 미만 · PC 2대</div>
       </div>
       <div class="plan-card" data-plan="ENTERPRISE">
+        <div class="card-radio"></div>
         <div class="name">ENTERPRISE</div>
         <div class="desc">인원 무제한 · PC 4대</div>
       </div>
@@ -150,21 +196,17 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">3</span>결제 기간 선택</div>
-    <div class="term-grid" id="term-grid">
-      <div class="term-card" data-term="1"><div class="yr">1년</div><div class="note">정상 흐름</div></div>
-      <div class="term-card" data-term="2"><div class="yr">2년</div><div class="note">2년차 할인↑</div></div>
-      <div class="term-card" data-term="3"><div class="yr">3년</div><div class="note">2·3년차 할인↑</div></div>
-      <div class="term-card" data-term="4"><div class="yr">4년</div><div class="note">전 기간 최대할인</div></div>
-      <div class="term-card" data-term="5"><div class="yr">5년</div><div class="note">전 기간 최대할인</div></div>
-    </div>
+    <div class="section-title" id="term-section-title"><span class="num">3</span>결제 기간 선택</div>
+    <div class="term-grid" id="term-grid"></div>
 
     <table class="price-table" id="price-table"></table>
 
     <div class="summary">
-      <span class="label">총 결제 금액</span>
+      <span class="label" id="summary-label">총 결제 금액</span>
       <span class="amount" id="total-amount">-<span> 원</span></span>
     </div>
+    <p id="new-expiry-note" style="display:none;font-size:12.5px;color:var(--gray-600);margin-top:6px"></p>
+    <p id="hook-note" class="hook-note" style="display:none"></p>
   </div>
 
   <p class="notice">
@@ -172,7 +214,29 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
     FREE 플랜을 먼저 사용해 보신 후 구매를 신중히 결정하세요.
   </p>
 
-  <button class="pay-btn" id="pay-btn">결제하기 →</button>
+  <button class="pay-btn" id="pay-btn" disabled>결제하기 →</button>
+</div>
+
+<!-- 개인정보 수집·이용 동의 모달 -->
+<div class="consent-modal-overlay" id="ord-consent-modal">
+  <div class="consent-modal">
+    <div class="consent-modal-header">
+      <h3>개인정보 수집 및 이용 동의</h3>
+      <button class="consent-modal-close" id="ord-consent-close" type="button" aria-label="닫기">&times;</button>
+    </div>
+    <div class="consent-modal-body">
+      <p>SRMOTIVE(이하 "회사")는 라이선스 결제·발급을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
+      <table class="consent-table">
+        <tr><th>수집 목적</th><td>라이선스 발급 및 사업자 본인 확인, 결제 처리, 서비스 제공, 공지사항 전달</td></tr>
+        <tr><th>수집 항목</th><td>담당자 이름, 이메일 주소, 사업자등록번호, 회사명</td></tr>
+        <tr><th>보유·이용 기간</th><td>라이선스 유효기간 동안(또는 삭제 요청 시까지), 관계 법령(전자상거래법 등)에 따라 보존 의무가 있는 경우 해당 기간까지</td></tr>
+        <tr><th>동의 거부 권리</th><td>위 동의를 거부할 권리가 있으며, 거부 시 라이선스 결제·발급이 제한됩니다.</td></tr>
+      </table>
+    </div>
+    <div class="consent-modal-footer">
+      <button class="consent-modal-ok" id="ord-consent-ok" type="button">확인</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -180,7 +244,7 @@ const SUPABASE_URL = 'https://nwrcbcoqcsactnskdotc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_fJRse4JPny8TchCb-MVCeg_DYMnnn7z';
 const HEADERS = { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
 
-// ─── 가격 정책(2026-09-11 확정) ───────────────────────────
+// ─── 가격 정책(§2.2, 2026-09-11 확정) ───────────────────────────
 // 1년차 = 프로모션가(고정). 2년차 이후 할인율은 결제기간(term)에 따라 결정:
 //   term=2 → 기본할인율-20%p, term=3 → 기본할인율-10%p, term≥4 → 기본할인율과 동일(상한).
 const PRICING = {
@@ -195,15 +259,63 @@ function yearRate(plan, term, yearIndex) {
   if (term === 3) return PRICING[plan].baseDiscount - 0.10;
   return PRICING[plan].baseDiscount; // term >= 4
 }
-
 function yearPrice(plan, term, yearIndex) {
   const p = PRICING[plan];
+  if (!p) return 0; // 잘못된 plan 값 방어(QA #5)
   return Math.round(p.normal * (1 - yearRate(plan, term, yearIndex)));
 }
+function newPurchaseTotal(plan, term) {
+  let total = 0;
+  for (let y = 1; y <= term; y++) total += yearPrice(plan, term, y);
+  return total;
+}
 
+// ─── 갱신 매트릭스(§3.2, 프로모 미적용 정상가) ───────────────────────────
+function renewalYearRate(term) { return ({ 1: 0, 2: 0.10, 3: 0.20, 4: 0.30, 5: 0.40 })[term] || 0; }
+function renewalTotal(plan, term) {
+  const p = PRICING[plan];
+  if (!p) return 0;
+  return Math.round(p.normal * term * (1 - renewalYearRate(term)));
+}
+
+// ─── 스페셜 프로모션 미리보기(§3.3.3, 내부 명칭 "부활 프로모션" — 고객에게는 절대 노출하지
+// 않는다). 실제 청구액은 create-pending-order가 purchase_history를 조회해 서버에서 다시
+// 계산한다(§3.5.2 "클라이언트 값 불신" 원칙) — 여기 계산은 결제 전 미리보기 용도일 뿐이다.
+function revivalRemainingCapYears(issuedAt, curExpiry) {
+  const maxExpiry = new Date(issuedAt);
+  maxExpiry.setFullYear(maxExpiry.getFullYear() + 5);
+  return Math.floor((maxExpiry - curExpiry) / (365 * 24 * 60 * 60 * 1000));
+}
+function revivalWithinDeadline(issuedAt) {
+  const deadline = new Date(issuedAt);
+  deadline.setDate(deadline.getDate() + 365);
+  return new Date() < deadline;
+}
+function monthsRemaining(curExpiry) {
+  const days = Math.floor((curExpiry - Date.now()) / (24 * 60 * 60 * 1000));
+  return Math.floor(Math.max(0, days) / 30);
+}
 function fmt(n) { return n.toLocaleString('ko-KR'); }
+function fmtDate(d) { return d.toLocaleDateString('ko-KR'); }
 
-let state = { plan: null, term: 1 };
+// ─── URL 파라미터 / 모드 판별 ───────────────────────────
+// App.jsx handleRenew()가 curGrade/curExpire/issuedAt을 실어 보낸다(가격 및 프로모션 정책.md §3.1.1-1).
+const params = new URLSearchParams(location.search);
+const orderType = params.get('type') || 'new'; // 'new' | 'renew' | 'upgrade' — §3.6 통합식으로 함께 처리
+const isRenewMode = orderType === 'renew' || orderType === 'upgrade';
+const orderLicenseKey = params.get('key') || '';
+const curGrade = params.get('curGrade') || '';
+const curExpire = params.get('curExpire') ? new Date(params.get('curExpire')) : null;
+const issuedAt  = params.get('issuedAt')  ? new Date(params.get('issuedAt'))  : null;
+
+const revival = { basicEligible: false, remainingCap: 0 };
+if (isRenewMode && issuedAt && curExpire) {
+  const cap = revivalRemainingCapYears(issuedAt, curExpire);
+  revival.remainingCap = Math.max(0, cap);
+  revival.basicEligible = cap > 0 && revivalWithinDeadline(issuedAt);
+}
+
+let state = { plan: null, term: isRenewMode ? 0 : 1 };
 
 const planGrid = document.getElementById('plan-grid');
 const termGrid = document.getElementById('term-grid');
@@ -211,20 +323,119 @@ const priceTable = document.getElementById('price-table');
 const totalAmountEl = document.getElementById('total-amount');
 
 function selectPlan(plan) {
+  if (!PRICING[plan]) return; // 잘못된 plan 값 방어(QA #5)
   state.plan = plan;
   planGrid.querySelectorAll('.plan-card').forEach(c => c.classList.toggle('selected', c.dataset.plan === plan));
   render();
 }
 function selectTerm(term) {
   state.term = term;
-  termGrid.querySelectorAll('.term-card').forEach(c => c.classList.toggle('selected', Number(c.dataset.term) === term));
+  renderTermGrid();
   render();
 }
-
 planGrid.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => selectPlan(c.dataset.plan)));
-termGrid.querySelectorAll('.term-card').forEach(c => c.addEventListener('click', () => selectTerm(Number(c.dataset.term))));
+
+// 기간 카드를 매번 새로 그린다 — 갱신/업그레이드 모드는 잔여캡에 따라 보이는 카드 수·만료일
+// 라벨이 달라지므로 정적 HTML로는 표현이 안 된다. 신규구매 모드는 1~5년 고정(§2.3.1 라디오
+// 마커만 추가된 기존 동작 그대로).
+function renderTermGrid() {
+  const capApplies = isRenewMode && revival.basicEligible;
+  const minTerm = isRenewMode ? 0 : 1;
+  const cards = [];
+  for (let t = minTerm; t <= 5; t++) {
+    const overCap = capApplies && t > revival.remainingCap;
+    if (overCap) continue; // §3.3.3 "적용 시 기간 제한" — 캡 초과분은 카드 자체를 보여주지 않는다
+    let expiryLabel = '';
+    if (isRenewMode && curExpire) {
+      const ex = new Date(curExpire); ex.setFullYear(ex.getFullYear() + t);
+      expiryLabel = `<div class="expiry">${t === 0 ? '만료일 변동 없음' : '~' + fmtDate(ex)}</div>`;
+    }
+    const label = t === 0 ? '연장 없음' : `${t}년`;
+    const note = !isRenewMode
+      ? (t === 1 ? '정상 흐름' : t <= 3 ? `${t}년차 할인↑` : '전 기간 최대할인')
+      : (t === 0 ? '등급만 변경' : (capApplies ? '스페셜 프로모션가' : '정상가'));
+    cards.push(`<div class="term-card ${state.term === t ? 'selected' : ''}" data-term="${t}">
+      <div class="card-radio"></div><div class="yr">${label}</div><div class="note">${note}</div>${expiryLabel}
+    </div>`);
+  }
+  termGrid.innerHTML = cards.join('');
+  termGrid.querySelectorAll('.term-card').forEach(c => c.addEventListener('click', () => selectTerm(Number(c.dataset.term))));
+
+  let overflowNote = document.getElementById('term-overflow-note-el');
+  if (capApplies && revival.remainingCap < 5) {
+    if (!overflowNote) {
+      overflowNote = document.createElement('div');
+      overflowNote.id = 'term-overflow-note-el';
+      overflowNote.className = 'term-overflow-note';
+      termGrid.insertAdjacentElement('afterend', overflowNote);
+    }
+    overflowNote.textContent = `${revival.remainingCap}년을 초과하는 장기 연장은 스페셜 프로모션이 적용되지 않습니다. 더 긴 기간을 원하시면 일반 갱신으로 진행해 주세요.`;
+    overflowNote.style.display = '';
+  } else if (overflowNote) {
+    overflowNote.style.display = 'none';
+  }
+}
+
+// §3.3/§3.3.1/§3.6 통합식 — termYears 인자를 받아 순수 함수로 만들어 POP 훅 미리보기(아래
+// hook-note)에서도 state를 건드리지 않고 재사용할 수 있게 한다.
+function computeRenewUpgrade(termYears, planOverride) {
+  const newGrade = planOverride || state.plan || curGrade;
+  const monthsLeft = curExpire ? monthsRemaining(curExpire) : 0;
+  const combinedMonths = monthsLeft + termYears * 12;
+  const revivalApplies = revival.basicEligible && termYears <= revival.remainingCap;
+
+  // 기존등급_연간가: 클라이언트는 실지불 이력을 모르므로 §3.3.1 폴백만 사용(서버가 재확인).
+  const existingGradeAnnual = revivalApplies ? (PRICING[curGrade]?.promo || 0) : (PRICING[curGrade]?.normal || 0);
+  const base = termYears > 0
+    ? (revivalApplies ? newPurchaseTotal(curGrade, termYears) : renewalTotal(curGrade, termYears))
+    : 0;
+  const newGradeAnnual = newGrade === curGrade
+    ? existingGradeAnnual
+    : (revivalApplies ? (PRICING[newGrade]?.promo || 0) : (PRICING[newGrade]?.normal || 0));
+  const delta = Math.round((newGradeAnnual - existingGradeAnnual) / 12 * combinedMonths);
+
+  return { base, delta, total: base + delta, revivalApplies, termYears, newGrade };
+}
 
 function render() {
+  if (isRenewMode) {
+    if (!curGrade || !curExpire) {
+      totalAmountEl.innerHTML = '현재 라이선스 정보를 확인할 수 없습니다<span></span>';
+      return;
+    }
+    const calc = computeRenewUpgrade(state.term);
+    priceTable.innerHTML = `
+      <tr><th>항목</th><th></th><th>금액</th></tr>
+      <tr><td>갱신 베이스${calc.revivalApplies ? ' (스페셜 프로모션)' : ''}</td><td></td><td>${fmt(calc.base)}원</td></tr>
+      <tr><td>등급차(업그레이드분)</td><td></td><td>${fmt(calc.delta)}원</td></tr>
+    `;
+    totalAmountEl.innerHTML = `${fmt(calc.total)}<span> 원</span>`;
+
+    const newExpiryEl = document.getElementById('new-expiry-note');
+    if (calc.termYears > 0) {
+      const ne = new Date(curExpire); ne.setFullYear(ne.getFullYear() + calc.termYears);
+      newExpiryEl.textContent = `새 만료일: ${fmtDate(ne)}`;
+    } else {
+      newExpiryEl.textContent = '만료일 변동 없음(등급만 변경, 남은 기간 차액만 청구)';
+    }
+    newExpiryEl.style.display = '';
+
+    // POP 훅(§3.6 "등급업그레이드만 하러 온 고객에게도 장기결제를 적극 제안") — 순수
+    // 업그레이드(0년) 상태에서도 장기결제 시 절감액을 나란히 보여준다.
+    const hookEl = document.getElementById('hook-note');
+    if (calc.termYears === 0 && state.plan && state.plan !== curGrade) {
+      const previewTerm = revival.basicEligible ? Math.max(1, Math.min(2, revival.remainingCap)) : 2;
+      const withTerm = computeRenewUpgrade(previewTerm);
+      hookEl.textContent = `${previewTerm}년 함께 결제 시 총액 ${fmt(withTerm.total)}원 — 등급만 바꿀 때(${fmt(calc.total)}원)보다 장기 약정까지 한 번에 해결됩니다.`;
+      hookEl.style.display = '';
+    } else {
+      hookEl.style.display = 'none';
+    }
+    if (typeof updateOrderSubmitState === 'function') updateOrderSubmitState();
+    return;
+  }
+
+  // ── 신규 구매(§2, 기존 로직) ──
   if (!state.plan) {
     priceTable.innerHTML = '';
     totalAmountEl.innerHTML = '플랜을 먼저 선택해주세요<span></span>';
@@ -245,11 +456,9 @@ function render() {
   totalAmountEl.innerHTML = `${fmt(total)}<span> 원 (${state.term}년 합계)</span>`;
 }
 
-// URL 쿼리스트링(?plan=STARTER)으로 진입 시 해당 플랜 미리 선택
-const params = new URLSearchParams(location.search);
-const presetPlan = params.get('plan');
-if (presetPlan && PRICING[presetPlan]) selectPlan(presetPlan);
-selectTerm(1);
+// 모드별 초기 렌더는 이 파일 맨 끝(스크립트 마지막)에서 실행한다 — render()가 renew 모드일 때
+// updateOrderSubmitState()를 호출하는데, 그 함수가 참조하는 ordConsentCheckbox/ordPayBtn 등의
+// const는 이 시점엔 아직 선언 전(TDZ)이라 여기서 바로 실행하면 ReferenceError가 난다.
 
 // 사업자등록번호 입력 중 자동 하이픈 포맷팅(FREE 신청 폼과 동일 패턴)
 document.getElementById('ord-bizno').addEventListener('input', (e) => {
@@ -281,11 +490,48 @@ function resetOrderEmailVerification() {
   ordSendOtpBtn.textContent = '인증번호 받기';
   ordSendOtpBtn.disabled = false;
   ordOtpStatus.innerHTML = '';
+  updateOrderSubmitState();
 }
 
 ordEmailInput.addEventListener('input', () => {
   if (orderEmailVerified) resetOrderEmailVerification();
 });
+
+// ─── 개인정보 수집·이용 동의 + 결제 버튼 활성화 조건 ───────────────
+// "필수 입력 완료 + 이메일 인증 완료 + 동의 체크" 세 가지를 모두 만족해야
+// [결제하기] 버튼이 활성화된다(그 전엔 비활성+연하게, CSS .pay-btn:disabled).
+// 플랜/기간 선택 여부는 기존 pay-btn 클릭 핸들러가 별도로 검사한다.
+const ordConsentCheckbox = document.getElementById('ord-consent');
+const ordConsentLink     = document.getElementById('ord-consent-link');
+const ordConsentModal    = document.getElementById('ord-consent-modal');
+const ordConsentClose    = document.getElementById('ord-consent-close');
+const ordConsentOk       = document.getElementById('ord-consent-ok');
+const ordPayBtn          = document.getElementById('pay-btn');
+
+function openOrderConsentModal(e) { if (e) e.preventDefault(); ordConsentModal.classList.add('open'); }
+function closeOrderConsentModal() { ordConsentModal.classList.remove('open'); }
+ordConsentLink.addEventListener('click', openOrderConsentModal);
+ordConsentClose.addEventListener('click', closeOrderConsentModal);
+ordConsentOk.addEventListener('click', closeOrderConsentModal);
+ordConsentModal.addEventListener('click', (e) => { if (e.target === ordConsentModal) closeOrderConsentModal(); });
+
+function updateOrderSubmitState() {
+  // 갱신/업그레이드 모드는 신청자 정보 섹션 자체가 없다(라이선스 키로 이미 본인 확인됨) —
+  // 등급 또는 기간 중 하나라도 "변경"을 선택했는지만 본다.
+  if (isRenewMode) {
+    ordPayBtn.disabled = !(state.plan && (state.term > 0 || state.plan !== curGrade));
+    return;
+  }
+  const nameVal = document.getElementById('ord-name').value.trim();
+  const bizNoDigits = document.getElementById('ord-bizno').value.replace(/\D/g, '');
+  const companyVal = document.getElementById('ord-company').value.trim();
+  const fieldsFilled = !!nameVal && bizNoDigits.length === 10 && !!companyVal;
+  ordPayBtn.disabled = !(fieldsFilled && orderEmailVerified && ordConsentCheckbox.checked);
+}
+['ord-name', 'ord-bizno', 'ord-company'].forEach((id) => {
+  document.getElementById(id).addEventListener('input', updateOrderSubmitState);
+});
+ordConsentCheckbox.addEventListener('change', updateOrderSubmitState);
 
 ordSendOtpBtn.addEventListener('click', async () => {
   const emailVal = ordEmailInput.value.trim();
@@ -338,6 +584,7 @@ ordVerifyOtpBtn.addEventListener('click', async () => {
     ordOtpCodeRow.style.display = 'none';
     ordSendOtpBtn.style.display = 'none';
     ordOtpStatus.innerHTML = '<p class="otp-verified">✓ 이메일 인증 완료</p>';
+    updateOrderSubmitState();
   } catch (err) {
     ordOtpStatus.innerHTML = `<p class="otp-msg error">⚠ ${err.message}</p>`;
   } finally {
@@ -346,12 +593,19 @@ ordVerifyOtpBtn.addEventListener('click', async () => {
   }
 });
 
-// 결제하기 — 아직 PG 연동 전이라 안내만 표시.
-// TODO(포트원 연동 시): 신청자 정보 + state.plan + state.term + 계산된 total +
-// orderVerifiedEmail을 license_key 선생성 API(PENDING)에 실어 보낸 뒤 PG 결제창을 호출한다.
-// 이때도 request-free-license와 마찬가지로 서버 쪽에서 이메일 인증 완료 여부를
-// 다시 확인해야 한다(프론트 우회 방지) — free_signup_email_otp 테이블 그대로 재사용 가능.
+// 결제하기 — 아직 PG 연동 전이라 안내만 표시(§4.1 범위 — 계산·미리보기까지만 완성하고
+// 실제 PortOne 연동은 §4.2로 미룬다). create-pending-order는 만들어뒀지만 이 버튼에서
+// 아직 호출하지 않는다 — §4.2(결제하기 버튼→PortOne)와 함께 붙일 예정.
 document.getElementById('pay-btn').addEventListener('click', () => {
+  if (isRenewMode) {
+    if (!state.plan) { alert('등급을 선택해주세요.'); return; }
+    if (!(state.term > 0 || state.plan !== curGrade)) {
+      alert('연장 기간을 선택하거나 등급을 변경해주세요.');
+      return;
+    }
+    alert('결제 페이지를 준비중입니다. 이메일(SRMOTIVE@DAUM.NET)로 문의주시면 안내드리겠습니다.');
+    return;
+  }
   if (!state.plan) { alert('플랜을 선택해주세요.'); return; }
   const name = document.getElementById('ord-name').value.trim();
   const bizNoDigits = document.getElementById('ord-bizno').value.replace(/\D/g, '');
@@ -364,8 +618,34 @@ document.getElementById('pay-btn').addEventListener('click', () => {
     alert('이메일 인증을 먼저 완료해주세요.');
     return;
   }
+  if (!ordConsentCheckbox.checked) {
+    alert('개인정보 수집 및 이용에 동의해주세요.');
+    return;
+  }
   alert('결제 페이지를 준비중입니다. 이메일(SRMOTIVE@DAUM.NET)로 문의주시면 안내드리겠습니다.');
 });
+
+// ─── 모드별 초기 렌더(스크립트 맨 마지막 — TDZ 방지, 위 설명 참고) ───────────────
+if (isRenewMode) {
+  document.getElementById('page-title').textContent = orderType === 'upgrade' ? '등급 업그레이드' : '라이선스 갱신';
+  document.getElementById('page-sub').textContent = '등급과 연장 기간을 선택하시면 결제 금액이 자동으로 계산됩니다.';
+  document.getElementById('ord-applicant-section').style.display = 'none';
+  document.getElementById('current-license-section').style.display = '';
+  document.getElementById('current-license-summary').textContent =
+    `현재 등급: ${curGrade || '-'} / 만료일: ${curExpire ? fmtDate(curExpire) : '-'}`;
+  if (revival.basicEligible) {
+    document.getElementById('revival-badge-slot').innerHTML =
+      `<span class="revival-badge">🎁 스페셜 프로모션 대상 — 최대 ${revival.remainingCap}년까지 신규가로 연장 가능</span>`;
+  }
+  document.getElementById('summary-label').textContent = '총 청구 금액';
+  document.getElementById('pay-btn').textContent = '결제하기 →';
+  if (curGrade && PRICING[curGrade]) selectPlan(curGrade); // 기본값: 현재 등급(그대로 갱신)
+  selectTerm(0);
+} else {
+  const presetPlan = params.get('plan');
+  if (presetPlan && PRICING[presetPlan]) selectPlan(presetPlan);
+  selectTerm(1);
+}
 </script>
 
 </body>
