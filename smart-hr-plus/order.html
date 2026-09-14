@@ -209,11 +209,14 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
     <p id="hook-note" class="hook-note" style="display:none"></p>
   </div>
 
-  <p class="notice">
-    ※ 발송 이후 라이선스 키 노출로 인하여 교환 및 반품이 불가합니다.<br>
-    FREE 플랜을 먼저 사용해 보신 후 구매를 신중히 결정하세요.
-    자세한 내용은 <a href="../refund.html" target="_blank" rel="noopener">환불정책</a>을 확인해 주세요.
+  <p class="notice" style="margin-bottom:8px;">
+    ※ 발송 이후 라이선스 키 노출로 인하여 교환 및 반품이 불가합니다. FREE 플랜을 먼저 사용해 보신 후 구매를 신중히 결정하세요.<br>
+    ※ 자세한 내용은 <a href="../refund.html" target="_blank" rel="noopener">환불정책</a>을 확인해 주세요.
   </p>
+  <label class="consent-row" style="margin-top:0;margin-bottom:28px;margin-left:38px;">
+    <input type="checkbox" id="ord-refund-ack" class="consent-checkbox">
+    <span>위 내용을 확인하였습니다.</span>
+  </label>
 
   <button class="pay-btn" id="pay-btn" disabled>결제하기 →</button>
 </div>
@@ -516,6 +519,7 @@ const ordConsentModal    = document.getElementById('ord-consent-modal');
 const ordConsentClose    = document.getElementById('ord-consent-close');
 const ordConsentOk       = document.getElementById('ord-consent-ok');
 const ordPayBtn          = document.getElementById('pay-btn');
+const ordRefundAck       = document.getElementById('ord-refund-ack');
 
 function openOrderConsentModal(e) { if (e) e.preventDefault(); ordConsentModal.classList.add('open'); }
 function closeOrderConsentModal() { ordConsentModal.classList.remove('open'); }
@@ -526,21 +530,23 @@ ordConsentModal.addEventListener('click', (e) => { if (e.target === ordConsentMo
 
 function updateOrderSubmitState() {
   // 갱신/업그레이드 모드는 신청자 정보 섹션 자체가 없다(라이선스 키로 이미 본인 확인됨) —
-  // 등급 또는 기간 중 하나라도 "변경"을 선택했는지만 본다.
+  // 등급 또는 기간 중 하나라도 "변경"을 선택했는지만 본다. 환불불가 안내 확인 체크박스는
+  // 신규/갱신 모드 공통으로 노출되므로 이 모드에서도 함께 검사한다.
   if (isRenewMode) {
-    ordPayBtn.disabled = !(state.plan && (state.term > 0 || state.plan !== curGrade));
+    ordPayBtn.disabled = !(state.plan && (state.term > 0 || state.plan !== curGrade) && ordRefundAck.checked);
     return;
   }
   const nameVal = document.getElementById('ord-name').value.trim();
   const bizNoDigits = document.getElementById('ord-bizno').value.replace(/\D/g, '');
   const companyVal = document.getElementById('ord-company').value.trim();
   const fieldsFilled = !!nameVal && bizNoDigits.length === 10 && !!companyVal;
-  ordPayBtn.disabled = !(fieldsFilled && orderEmailVerified && ordConsentCheckbox.checked);
+  ordPayBtn.disabled = !(fieldsFilled && orderEmailVerified && ordConsentCheckbox.checked && ordRefundAck.checked);
 }
 ['ord-name', 'ord-bizno', 'ord-company'].forEach((id) => {
   document.getElementById(id).addEventListener('input', updateOrderSubmitState);
 });
 ordConsentCheckbox.addEventListener('change', updateOrderSubmitState);
+ordRefundAck.addEventListener('change', updateOrderSubmitState);
 
 ordSendOtpBtn.addEventListener('click', async () => {
   const emailVal = ordEmailInput.value.trim();
