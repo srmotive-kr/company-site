@@ -61,6 +61,8 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
 @media(max-width:700px){ .plan-grid, .field-grid { grid-template-columns:1fr; } .term-grid { grid-template-columns:repeat(3,1fr) !important; } }
 .plan-card { border:2px solid var(--gray-200); border-radius:14px; padding:18px; cursor:pointer; text-align:center; transition:all 0.15s; }
 .plan-card:hover { border-color:var(--blue-300); }
+.plan-card.disabled { cursor:not-allowed; opacity:0.4; }
+.plan-card.disabled:hover { border-color:var(--gray-200); }
 .plan-card.selected { border-color:var(--blue-700); background:var(--blue-50); }
 .plan-card .name { font-size:16px; font-weight:900; margin-bottom:4px; }
 .plan-card .desc { font-size:12px; color:var(--gray-500); }
@@ -260,6 +262,10 @@ const HEADERS = { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY, 'Au
 // 1년차 = 프로모션가(고정). 2년차 이후 할인율은 결제기간(term)에 따라 결정:
 //   term=2 → 기본할인율-20%p, term=3 → 기본할인율-10%p, term≥4 → 기본할인율과 동일(상한).
 const PRICING = {
+  // FREE: 유료 등급이 아니라 목록가가 없다 — 무료로 취급(전부 0)해 FREE→유료 업그레이드 시
+  // "기존등급_연간가"가 0으로 자연스럽게 계산되게 한다(2026-09-14, create-pending-order와
+  // 동일 수정 — 서버가 PRICING['FREE'] 없이 크래시하던 버그를 여기도 함께 맞춤).
+  FREE:       { name: 'FREE',       normal: 0,     promo: 0,     baseDiscount: 0 },
   STARTER:    { name: 'STARTER',    normal: 33000, promo: 9900,  baseDiscount: 0.70 },
   PRO:        { name: 'PRO',        normal: 55000, promo: 19800, baseDiscount: 0.64 },
   ENTERPRISE: { name: 'ENTERPRISE', normal: 99000, promo: 39600, baseDiscount: 0.60 },
@@ -289,6 +295,13 @@ function renewalTotal(plan, term) {
   if (!p) return 0;
   return Math.round(p.normal * term * (1 - renewalYearRate(term)));
 }
+
+// ─── 다운그레이드 전면 차단(2026-09-14) ────────────────────────────────────
+// 하위 등급으로의 변경은 허용하지 않는다 — 가격 산정 문제뿐 아니라, 이미 설치된 PC
+// 대수·직원수가 낮은 등급의 이용 한도(max_users/max_emps)를 초과해 있을 수 있어
+// 단순 요금 재계산만으로는 해결되지 않는다. 최종 판정은 서버(create-pending-order)가
+// 하며, 여기 클라이언트 로직은 UI에서 애초에 선택하지 못하도록 막는 용도.
+const GRADE_RANK = { FREE: 0, STARTER: 1, PRO: 2, ENTERPRISE: 3 };
 
 // ─── 스페셜 프로모션 미리보기(§3.3.3, 내부 명칭 "부활 프로모션" — 고객에게는 절대 노출하지
 // 않는다). 실제 청구액은 create-pending-order가 purchase_history를 조회해 서버에서 다시
@@ -336,6 +349,9 @@ const totalAmountEl = document.getElementById('total-amount');
 
 function selectPlan(plan) {
   if (!PRICING[plan]) return; // 잘못된 plan 값 방어(QA #5)
+  // 다운그레이드 전면 차단 — 갱신/업그레이드 모드에서 현재 등급보다 낮은 카드는 선택 자체를
+  // 막는다(서버도 동일하게 거부하지만, 여기서 먼저 막아 헷갈리는 진행을 방지).
+  if (isRenewMode && curGrade && (GRADE_RANK[plan] ?? 0) < (GRADE_RANK[curGrade] ?? 0)) return;
   state.plan = plan;
   planGrid.querySelectorAll('.plan-card').forEach(c => c.classList.toggle('selected', c.dataset.plan === plan));
   render();
@@ -656,6 +672,11 @@ if (isRenewMode) {
   document.getElementById('pay-btn').textContent = '결제하기 →';
   if (curGrade && PRICING[curGrade]) selectPlan(curGrade); // 기본값: 현재 등급(그대로 갱신)
   selectTerm(0);
+  // 다운그레이드 차단 — 현재 등급보다 낮은 카드는 흐리게 표시하고 클릭도 막는다(selectPlan
+  // 참고). PC/직원수가 낮은 등급의 한도를 넘어 있을 수 있어 요금 재계산만으론 불충분하다.
+  planGrid.querySelectorAll('.plan-card').forEach(c => {
+    if ((GRADE_RANK[c.dataset.plan] ?? 0) < (GRADE_RANK[curGrade] ?? 0)) c.classList.add('disabled');
+  });
 } else {
   const presetPlan = params.get('plan');
   if (presetPlan && PRICING[presetPlan]) selectPlan(presetPlan);
