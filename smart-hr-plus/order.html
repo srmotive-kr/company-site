@@ -349,6 +349,12 @@ function monthsRemaining(curExpiry) {
 function fmt(n) { return n.toLocaleString('ko-KR'); }
 function fmtDate(d) { return d.toLocaleDateString('ko-KR'); }
 
+// KG이니시스 정식계약 체결 전까지 신규 구매 결제만 차단한다(2026-09-16). 가격표/견적 계산은
+// 그대로 보여주고, [결제하기] 클릭 시점에만 막는다(아래 pay-btn 클릭 핸들러 참고). 앱에서
+// 여는 갱신/업그레이드는 이 플래그와 무관하게 계속 테스트 모듈로 동작한다. 정식 오픈 시
+// true로 바꾸면 된다.
+const NEW_PURCHASE_LIVE = false;
+
 // ─── URL 파라미터 / 모드 판별 ───────────────────────────
 // App.jsx handleRenew()가 curGrade/curExpire/issuedAt을 실어 보낸다(가격 및 프로모션 정책.md §3.1.1-1).
 const params = new URLSearchParams(location.search);
@@ -821,6 +827,15 @@ document.getElementById('pay-btn').addEventListener('click', async () => {
       ordPayBtn.disabled = false;
       ordPayBtn.textContent = '결제하기 →';
     }
+    return;
+  }
+
+  // 신규 구매 결제 차단(2026-09-16, KG이니시스 정식계약 체결 전까지) — 가격표/프로모션
+  // 확인과 플랜·기간 선택, 견적 계산까지는 그대로 볼 수 있게 두고, 실제 결제 시도(이 버튼
+  // 클릭) 시점에만 막는다. 앱에서 여는 갱신/업그레이드(위 isRenewMode 분기)는 이 차단
+  // 대상이 아니다 — 정식 오픈 시 NEW_PURCHASE_LIVE만 true로 바꾸면 된다.
+  if (!NEW_PURCHASE_LIVE) {
+    alert('결제 페이지를 준비중입니다. 이메일(SRMOTIVE@DAUM.NET)로 문의주시면 안내드리겠습니다.');
     return;
   }
 
