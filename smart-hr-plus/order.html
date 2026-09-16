@@ -155,6 +155,7 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
   <div class="section" id="current-license-section" style="display:none">
     <div class="section-title"><span class="num">i</span>현재 라이선스</div>
     <p id="current-license-summary" style="font-size:13px;color:var(--gray-600)"></p>
+    <p id="current-license-key" style="font-size:12px;font-family:monospace;color:var(--gray-500);margin-top:4px;display:none"></p>
     <div id="revival-badge-slot"></div>
     <div class="field" style="max-width:260px;margin-top:14px;">
       <label>휴대폰 번호</label>
@@ -841,6 +842,15 @@ if (isRenewMode) {
   document.getElementById('current-license-section').style.display = '';
   document.getElementById('current-license-summary').textContent =
     `현재 등급: ${curGrade || '-'} / 만료일: ${curExpire ? fmtDate(curExpire) : '-'}`;
+  // 앱에서 연 결제창은 별도 "라이선스 정보" 화면 없이 바로 이 페이지로 오므로(2026-09-16,
+  // DEV 중계 화면 폐지와 함께 실제 화면에도 반영), 어떤 라이선스를 갱신/업그레이드하는지
+  // 여기서도 확인할 수 있어야 한다. textContent만 사용해 URL 파라미터 값을 그대로 마크업에
+  // 꽂지 않는다(XSS 방지).
+  if (orderLicenseKey) {
+    const keyEl = document.getElementById('current-license-key');
+    keyEl.textContent = `라이선스 키: ${orderLicenseKey}`;
+    keyEl.style.display = '';
+  }
   if (revival.basicEligible) {
     document.getElementById('revival-badge-slot').innerHTML =
       `<span class="revival-badge">🎁 스페셜 프로모션 대상 — 최대 ${revival.remainingCap}년까지 신규가로 연장 가능</span>`;
