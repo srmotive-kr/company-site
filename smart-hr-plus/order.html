@@ -158,6 +158,10 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
     <p id="current-license-key" style="font-size:12px;font-family:monospace;color:var(--gray-500);margin-top:4px;display:none"></p>
     <div id="revival-badge-slot"></div>
     <div class="field" style="max-width:260px;margin-top:14px;">
+      <label>이메일 (등록된 주소, 변경 불가)</label>
+      <input id="ord-email-renew" class="field-input" type="email" disabled style="background:var(--gray-50);color:var(--gray-500);">
+    </div>
+    <div class="field" style="max-width:260px;margin-top:10px;">
       <label>휴대폰 번호</label>
       <input id="ord-phone-renew" class="field-input" type="tel" placeholder="010-0000-0000" inputmode="numeric" maxlength="13">
     </div>
@@ -360,6 +364,9 @@ const isAppOrigin = params.get('source') === 'app';
 // 기존에 등록된 휴대폰번호가 있으면 앱이 함께 실어보낸다(2026-09-16) — 매번 새로 입력하지
 // 않아도 되게 미리 채워주되, 아래에서 그대로 두거나 고쳐서 제출할 수 있다.
 const prefillPhone = params.get('phone') || '';
+// 이니시스 V2 결제는 구매자 이메일도 필수라, 갱신/업그레이드 모드는 등록된 이메일을
+// 그대로 결제에 사용한다(새 이메일 입력 UI 없음 — 읽기 전용으로만 표시).
+const prefillEmail = params.get('email') || '';
 
 const revival = { basicEligible: false, remainingCap: 0 };
 if (isRenewMode && issuedAt && curExpire) {
@@ -783,6 +790,10 @@ document.getElementById('pay-btn').addEventListener('click', async () => {
     if (!ordRefundAck.checked) { alert('환불정책 확인에 동의해주세요.'); return; }
     const renewPhoneDigits = document.getElementById('ord-phone-renew').value.replace(/\D/g, '');
     if (renewPhoneDigits.length < 10) { alert('휴대폰 번호를 입력해주세요.'); return; }
+    if (!prefillEmail) {
+      alert('등록된 이메일이 없어 결제를 진행할 수 없습니다. 앱의 시스템관리 > 등록 이메일에서 먼저 이메일을 등록해주세요.');
+      return;
+    }
 
     ordPayBtn.disabled = true; ordPayBtn.textContent = '주문 생성 중...';
     try {
@@ -800,7 +811,10 @@ document.getElementById('pay-btn').addEventListener('click', async () => {
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || '주문 생성에 실패했습니다.');
       const orderName = `Smart HR+ ${state.plan} ${state.term > 0 ? state.term + '년 갱신' : '업그레이드'}`;
-      await runPayment(data.merchant_uid, data.amount, orderName, { phoneNumber: document.getElementById('ord-phone-renew').value.trim() });
+      await runPayment(data.merchant_uid, data.amount, orderName, {
+        email: prefillEmail,
+        phoneNumber: document.getElementById('ord-phone-renew').value.trim(),
+      });
     } catch (err) {
       alert(err.message);
     } finally {
@@ -879,6 +893,9 @@ if (isRenewMode) {
     keyEl.textContent = `라이선스 키: ${orderLicenseKey}`;
     keyEl.style.display = '';
   }
+  // 이니시스 V2 결제 필수값(구매자 이메일) — 갱신/업그레이드는 등록된 이메일을 읽기 전용으로
+  // 보여주기만 한다(2026-09-16). value 할당은 안전(DOM 프로퍼티 대입이지 마크업 삽입이 아님).
+  document.getElementById('ord-email-renew').value = prefillEmail || '등록된 이메일 없음';
   if (revival.basicEligible) {
     document.getElementById('revival-badge-slot').innerHTML =
       `<span class="revival-badge">🎁 스페셜 프로모션 대상 — 최대 ${revival.remainingCap}년까지 신규가로 연장 가능</span>`;

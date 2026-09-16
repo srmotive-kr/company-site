@@ -666,7 +666,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>1대 PC 설치 가능</li>
         </ul>
-        <a href="./order.html?plan=STARTER" class="plan-btn orange">시작하기</a>
+        <a href="#" class="plan-btn orange js-plan-btn">시작하기</a>
       </div>
 
       <!-- PRO -->
@@ -692,7 +692,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#2563EB"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>2대 PC 설치 가능</li>
         </ul>
-        <a href="./order.html?plan=PRO" class="plan-btn blue-btn">시작하기</a>
+        <a href="#" class="plan-btn blue-btn js-plan-btn">시작하기</a>
       </div>
 
       <!-- ENTERPRISE -->
@@ -717,7 +717,7 @@ footer { background:var(--gray-900); border-top:1px solid rgba(255,255,255,0.05)
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#64748B"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>오프라인 완전 보안</li>
           <li><svg class="plan-check" viewBox="0 0 20 20" fill="#64748B"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>4대 PC 설치 가능</li>
         </ul>
-        <a href="./order.html?plan=ENTERPRISE" class="plan-btn outline-btn">시작하기</a>
+        <a href="#" class="plan-btn outline-btn js-plan-btn">시작하기</a>
       </div>
 
     </div>
@@ -1014,8 +1014,16 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// 유료 플랜 "시작하기" — 이제 order.html(주문 상세페이지)로 실제 이동한다
-// (결제 API 호출/교환·반품 고지는 그 페이지의 "결제하기" 버튼에서 처리).
+// 유료 플랜 "시작하기" — 결제 페이지 준비중 안내(2026-09-16 복원). order.html 자체는
+// KG이니시스 테스트 MID로 내부 테스트 중이며 실제로 동작하지만, 정식 계약 체결 후 실모듈을
+// 붙이기 전까지는 실고객에게 결제 진입로를 열어주지 않는다 — 정식 오픈 시 이 리스너를
+// 제거하고 각 버튼 href를 "./order.html?plan=X"로 되돌리면 된다.
+document.querySelectorAll('.js-plan-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('결제 페이지를 준비중입니다. 이메일(SRMOTIVE@DAUM.NET)로 문의주시면 안내드리겠습니다.');
+  });
+});
 
 // FAQ accordion
 document.querySelectorAll('.faq-q').forEach(btn => {
