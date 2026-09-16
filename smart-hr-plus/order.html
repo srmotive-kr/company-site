@@ -357,6 +357,9 @@ const issuedAt  = params.get('issuedAt')  ? new Date(params.get('issuedAt'))  : 
 // 채널 스킴(2026-09-16) — 앱이 내부 브라우저창(채널 C)으로 이 페이지를 열 때 App.jsx가
 // source=app을 붙인다. create-pending-order에 그대로 전달해 채널을 APP_ORDER_EXT로 기록.
 const isAppOrigin = params.get('source') === 'app';
+// 기존에 등록된 휴대폰번호가 있으면 앱이 함께 실어보낸다(2026-09-16) — 매번 새로 입력하지
+// 않아도 되게 미리 채워주되, 아래에서 그대로 두거나 고쳐서 제출할 수 있다.
+const prefillPhone = params.get('phone') || '';
 
 const revival = { basicEligible: false, remainingCap: 0 };
 if (isRenewMode && issuedAt && curExpire) {
@@ -365,7 +368,7 @@ if (isRenewMode && issuedAt && curExpire) {
   revival.basicEligible = cap > 0 && revivalWithinDeadline(issuedAt);
 }
 
-let state = { plan: null, term: isRenewMode ? 0 : 1 };
+let state = { plan: null, term: (isRenewMode && curExpire) ? 0 : 1 };
 
 const planGrid = document.getElementById('plan-grid');
 const termGrid = document.getElementById('term-grid');
@@ -393,7 +396,11 @@ planGrid.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click',
 // 마커만 추가된 기존 동작 그대로).
 function renderTermGrid() {
   const capApplies = isRenewMode && revival.basicEligible;
-  const minTerm = isRenewMode ? 0 : 1;
+  // 무기한(만료일 없음) 라이선스는 "연장 없음(등급만 변경)"의 프로레이트 계산 근거인 "남은
+  // 개월수" 자체가 없어 0개월로 계산돼 청구액이 항상 0원이 되는 문제가 있었다(2026-09-16,
+  // 실사용자 테스트로 발견). 무기한 라이선스는 이 옵션 자체를 없애 자동 계산을 막고, 기간을
+  // 반드시 선택하게 한다(그러면 그 기간만큼 정상 계산되어 무기한→기간제로 전환됨).
+  const minTerm = (isRenewMode && curExpire) ? 0 : 1;
   const cards = [];
   for (let t = minTerm; t <= 5; t++) {
     const overCap = capApplies && t > revival.remainingCap;
@@ -426,6 +433,21 @@ function renderTermGrid() {
     overflowNote.style.display = '';
   } else if (overflowNote) {
     overflowNote.style.display = 'none';
+  }
+
+  // 무기한 라이선스 안내(2026-09-16) — "연장 없음(등급만 변경)" 옵션을 제거한 이유를 설명.
+  let unlimitedNote = document.getElementById('unlimited-license-note-el');
+  if (isRenewMode && !curExpire) {
+    if (!unlimitedNote) {
+      unlimitedNote = document.createElement('div');
+      unlimitedNote.id = 'unlimited-license-note-el';
+      unlimitedNote.className = 'term-overflow-note';
+      termGrid.insertAdjacentElement('afterend', unlimitedNote);
+    }
+    unlimitedNote.textContent = '현재 라이선스는 만료일이 없는 무기한 라이선스라 "등급만 변경"은 자동으로 처리할 수 없습니다. 기간을 선택해 주세요(선택한 기간만큼 반영됩니다). 등급만 바꾸고 싶으시면 고객센터(srmotive@daum.net)로 문의해 주세요.';
+    unlimitedNote.style.display = '';
+  } else if (unlimitedNote) {
+    unlimitedNote.style.display = 'none';
   }
 }
 
@@ -532,15 +554,21 @@ document.getElementById('ord-bizno').addEventListener('input', (e) => {
 // "010-0000-0000" 형식으로 요구한다(하이픈 없으면 결제창 호출 자체가 실패, 실사용자 테스트로 확인).
 // 신규(ord-phone)/갱신·업그레이드(ord-phone-renew) 두 모드가 서로 다른 섹션에 각자의 입력란을 쓴다
 // (그 섹션 자체가 모드별로 통째로 표시/숨김되므로, 같은 id 하나를 공유하면 숨겨진 쪽 값이 안 잡힘).
+function formatPhoneDigits(raw) {
+  const digits = raw.replace(/\D/g, '').slice(0, 11);
+  if (digits.length > 7) return digits.slice(0, 3) + '-' + digits.slice(3, 7) + '-' + digits.slice(7);
+  if (digits.length > 3) return digits.slice(0, 3) + '-' + digits.slice(3);
+  return digits;
+}
 ['ord-phone', 'ord-phone-renew'].forEach((id) => {
   document.getElementById(id).addEventListener('input', (e) => {
-    const digits = e.target.value.replace(/\D/g, '').slice(0, 11);
-    let formatted = digits;
-    if (digits.length > 7) formatted = digits.slice(0, 3) + '-' + digits.slice(3, 7) + '-' + digits.slice(7);
-    else if (digits.length > 3) formatted = digits.slice(0, 3) + '-' + digits.slice(3);
-    e.target.value = formatted;
+    e.target.value = formatPhoneDigits(e.target.value);
   });
 });
+// 기존 등록 번호 미리 채우기(갱신/업그레이드 모드, 2026-09-16) — 그대로 두거나 고쳐서 제출 가능.
+if (prefillPhone) {
+  document.getElementById('ord-phone-renew').value = formatPhoneDigits(prefillPhone);
+}
 
 // ─── 이메일 인증(OTP) — FREE 신청 폼과 동일한 엣지함수 재사용 ───────────
 let orderEmailVerified = false;
