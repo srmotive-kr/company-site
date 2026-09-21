@@ -343,7 +343,7 @@ function revivalRemainingCapYears(issuedAt, curExpiry) {
 }
 function revivalWithinDeadline(issuedAt) {
   const deadline = new Date(issuedAt);
-  deadline.setDate(deadline.getDate() + 365);
+  deadline.setMonth(deadline.getMonth() + 6);
   return new Date() < deadline;
 }
 function monthsRemaining(curExpiry) {
