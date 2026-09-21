@@ -783,7 +783,13 @@ async function runPayment(merchantUid, amount, orderName, customer) {
     const result = await confirmPaymentWithServer(merchantUid);
     hidePayOverlay();
     if (result.ok) {
-      alert('결제가 완료되었습니다! 라이선스 키가 이메일로 발송되었습니다.');
+      // payment-webhook은 NEW(신규발급) 결제에만 발급 안내 이메일을 보낸다(RENEW/UPGRADE는
+      // 이미 있는 라이선스 키를 그대로 쓰므로 보낼 메일이 없음) — 결제완료 안내 문구도 그에
+      // 맞게 분기한다(2026-09-21, 갱신인데 "이메일로 발송되었습니다"라고 떠서 혼란을 준 것을
+      // 실사용자 테스트로 발견).
+      alert(isRenewMode
+        ? '결제가 완료되었습니다! 변경 내용이 즉시 적용되었습니다.'
+        : '결제가 완료되었습니다! 라이선스 키가 이메일로 발송되었습니다.');
       // paid=1 — 앱이 내부 브라우저창(채널 APP_ORDER_EXT)으로 이 페이지를 열었을 때, main.js가
       // 이 이동을 감지해 결제완료로 인식하고 창을 닫는다(2026-09-16). 일반 웹 이용자에게는
       // 그냥 무해한 쿼리 파라미터일 뿐이다.
