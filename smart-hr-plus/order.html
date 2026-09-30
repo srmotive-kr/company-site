@@ -180,16 +180,20 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
       <div class="field"><label>회사명</label><input id="ord-company" type="text" placeholder="회사명"></div>
     </div>
 
-    <label class="free-label" style="display:block;margin:16px 0 -2px">이메일 인증 *</label>
-    <div class="otp-row">
-      <input id="ord-email" class="field-input" type="email" placeholder="이메일 주소">
-      <button class="otp-btn" id="send-otp-btn" type="button">인증번호 받기</button>
-      <span class="otp-row" id="otp-code-row" style="display:none">
-        <input id="ord-otp-code" class="field-input" type="text" inputmode="numeric" placeholder="인증번호를 입력하세요" maxlength="6">
-        <button class="otp-btn verify" id="verify-otp-btn" type="button">인증번호 확인</button>
-      </span>
+    <!-- TEMP-DISABLE-EMAIL-VERIFY: 테스트용 임시 숨김, 곧바로 원복 예정 -->
+    <div style="display:none">
+      <label class="free-label" style="display:block;margin:16px 0 -2px">이메일 인증 *</label>
+      <div class="otp-row">
+        <input id="ord-email" class="field-input" type="email" placeholder="이메일 주소">
+        <button class="otp-btn" id="send-otp-btn" type="button">인증번호 받기</button>
+        <span class="otp-row" id="otp-code-row" style="display:none">
+          <input id="ord-otp-code" class="field-input" type="text" inputmode="numeric" placeholder="인증번호를 입력하세요" maxlength="6">
+          <button class="otp-btn verify" id="verify-otp-btn" type="button">인증번호 확인</button>
+        </span>
+      </div>
+      <div id="otp-status"></div>
     </div>
-    <div id="otp-status"></div>
+    <!-- /TEMP-DISABLE-EMAIL-VERIFY -->
 
     <label class="consent-row">
       <input type="checkbox" id="ord-consent" class="consent-checkbox">
@@ -219,7 +223,10 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
   </div>
 
   <div class="section">
-    <div class="section-title" id="term-section-title"><span class="num">3</span>결제 기간 선택</div>
+    <!-- TEMP-HIDE-TERM-SELECT: KG이니시스 본계약 관련 임시조치, 랜딩페이지 신규구매(isRenewMode=false)만
+         1년 고정으로 기간선택 UI를 숨긴다(실제 숨김 처리는 JS쪽 TEMP-HIDE-TERM-SELECT 마커 참고).
+         앱 연동 업그레이드/연장(스페셜 프로모션, isRenewMode=true)은 미해당, 그대로 유지. 곧바로 원복 예정. -->
+    <div id="term-section-title"><span class="num">3</span>결제 기간 선택</div>
     <div class="term-grid" id="term-grid"></div>
 
     <table class="price-table" id="price-table"></table>
@@ -374,6 +381,15 @@ const issuedAt  = params.get('issuedAt')  ? new Date(params.get('issuedAt'))  : 
 // 채널 스킴(2026-09-16) — 앱이 내부 브라우저창(채널 C)으로 이 페이지를 열 때 App.jsx가
 // source=app을 붙인다. create-pending-order에 그대로 전달해 채널을 APP_ORDER_EXT로 기록.
 const isAppOrigin = params.get('source') === 'app';
+
+// TEMP-HIDE-TERM-SELECT: KG이니시스 본계약 관련 임시조치. 랜딩페이지 신규구매(isRenewMode=false)만
+// 기간선택 UI를 숨기고 1년 고정(state.term 기본값이 원래도 1이라 별도 강제 로직 불필요, order.html:399
+// 부근 참고). 앱 연동 업그레이드/연장(스페셜 프로모션, isRenewMode=true)은 그대로 유지. 곧바로 원복 예정.
+if (!isRenewMode) {
+  document.getElementById('term-section-title').style.display = 'none';
+  document.getElementById('term-grid').style.display = 'none';
+  document.getElementById('page-sub').textContent = '플랜을 선택하시면 결제 금액이 자동으로 계산됩니다(1년 계약).'; // 원문: "플랜과 결제 기간을 선택하시면 결제 금액이 자동으로 계산됩니다."
+}
 // 기존에 등록된 휴대폰번호가 있으면 앱이 함께 실어보낸다(2026-09-16) — 매번 새로 입력하지
 // 않아도 되게 미리 채워주되, 아래에서 그대로 두거나 고쳐서 제출할 수 있다.
 const prefillPhone = params.get('phone') || '';
@@ -664,6 +680,12 @@ function updateOrderSubmitState() {
 });
 ordConsentCheckbox.addEventListener('change', updateOrderSubmitState);
 ordRefundAck.addEventListener('change', updateOrderSubmitState);
+
+// TEMP-DISABLE-EMAIL-VERIFY: 인증 절차 생략, 더미 이메일로 바로 인증완료 처리(테스트용, 즉시 원복 예정)
+ordEmailInput.value = 'srmotive@daum.net';
+orderEmailVerified = true;
+orderVerifiedEmail = 'srmotive@daum.net';
+updateOrderSubmitState();
 
 ordSendOtpBtn.addEventListener('click', async () => {
   const emailVal = ordEmailInput.value.trim();
