@@ -367,7 +367,7 @@ function fmtDate(d) { return d.toLocaleDateString('ko-KR'); }
 // 실서버(srmotive.co.kr)에서만 차단하고, 그 외(로컬 개발서버 등)에서는 결제 테스트가
 // 가능하도록 호스트명으로 분기한다(2026-09-21).
 const IS_PRODUCTION_HOST = location.hostname === 'srmotive.co.kr' || location.hostname === 'www.srmotive.co.kr';
-const NEW_PURCHASE_LIVE = !IS_PRODUCTION_HOST;
+const NEW_PURCHASE_LIVE = true; // 정식 오픈(2026-09-30, PG사 승인 진행)
 
 // ─── URL 파라미터 / 모드 판별 ───────────────────────────
 // App.jsx handleRenew()가 curGrade/curExpire/issuedAt을 실어 보낸다(가격 및 프로모션 정책.md §3.1.1-1).
@@ -921,6 +921,9 @@ document.getElementById('pay-btn').addEventListener('click', async () => {
     const data = await res.json();
     if (!res.ok || !data.success) throw new Error(data.error || '주문 생성에 실패했습니다.');
     const orderName = `Smart HR+ ${state.plan} 신규 ${state.term}년`;
+    // TEMP-DISABLE-EMAIL-VERIFY: 결제창 호출 시 이메일을 빼려고 시도했으나, PortOne SDK가
+    // "이니시스 V2 일반 결제의 경우 구매자 이메일은 필수 입력입니다"로 클라이언트단에서부터
+    // 강제 차단함을 확인(2026-09-30 라이브 테스트) — 우회 불가, 그대로 orderVerifiedEmail 사용.
     await runPayment(data.merchant_uid, data.amount, orderName, {
       fullName: name, email: orderVerifiedEmail, phoneNumber: document.getElementById('ord-phone').value.trim(),
     });
