@@ -180,20 +180,16 @@ body { font-family: var(--font-ko); color: var(--gray-900); background: var(--gr
       <div class="field"><label>회사명</label><input id="ord-company" type="text" placeholder="회사명"></div>
     </div>
 
-    <!-- TEMP-DISABLE-EMAIL-VERIFY: 테스트용 임시 숨김, 곧바로 원복 예정 -->
-    <div style="display:none">
-      <label class="free-label" style="display:block;margin:16px 0 -2px">이메일 인증 *</label>
-      <div class="otp-row">
-        <input id="ord-email" class="field-input" type="email" placeholder="이메일 주소">
-        <button class="otp-btn" id="send-otp-btn" type="button">인증번호 받기</button>
-        <span class="otp-row" id="otp-code-row" style="display:none">
-          <input id="ord-otp-code" class="field-input" type="text" inputmode="numeric" placeholder="인증번호를 입력하세요" maxlength="6">
-          <button class="otp-btn verify" id="verify-otp-btn" type="button">인증번호 확인</button>
-        </span>
-      </div>
-      <div id="otp-status"></div>
+    <label class="free-label" style="display:block;margin:16px 0 -2px">이메일 인증 *</label>
+    <div class="otp-row">
+      <input id="ord-email" class="field-input" type="email" placeholder="이메일 주소">
+      <button class="otp-btn" id="send-otp-btn" type="button">인증번호 받기</button>
+      <span class="otp-row" id="otp-code-row" style="display:none">
+        <input id="ord-otp-code" class="field-input" type="text" inputmode="numeric" placeholder="인증번호를 입력하세요" maxlength="6">
+        <button class="otp-btn verify" id="verify-otp-btn" type="button">인증번호 확인</button>
+      </span>
     </div>
-    <!-- /TEMP-DISABLE-EMAIL-VERIFY -->
+    <div id="otp-status"></div>
 
     <label class="consent-row">
       <input type="checkbox" id="ord-consent" class="consent-checkbox">
@@ -681,12 +677,6 @@ function updateOrderSubmitState() {
 ordConsentCheckbox.addEventListener('change', updateOrderSubmitState);
 ordRefundAck.addEventListener('change', updateOrderSubmitState);
 
-// TEMP-DISABLE-EMAIL-VERIFY: 인증 절차 생략, 더미 이메일로 바로 인증완료 처리(테스트용, 즉시 원복 예정)
-ordEmailInput.value = 'srmotive@daum.net';
-orderEmailVerified = true;
-orderVerifiedEmail = 'srmotive@daum.net';
-updateOrderSubmitState();
-
 ordSendOtpBtn.addEventListener('click', async () => {
   const emailVal = ordEmailInput.value.trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -921,9 +911,6 @@ document.getElementById('pay-btn').addEventListener('click', async () => {
     const data = await res.json();
     if (!res.ok || !data.success) throw new Error(data.error || '주문 생성에 실패했습니다.');
     const orderName = `Smart HR+ ${state.plan} 신규 ${state.term}년`;
-    // TEMP-DISABLE-EMAIL-VERIFY: 결제창 호출 시 이메일을 빼려고 시도했으나, PortOne SDK가
-    // "이니시스 V2 일반 결제의 경우 구매자 이메일은 필수 입력입니다"로 클라이언트단에서부터
-    // 강제 차단함을 확인(2026-09-30 라이브 테스트) — 우회 불가, 그대로 orderVerifiedEmail 사용.
     await runPayment(data.merchant_uid, data.amount, orderName, {
       fullName: name, email: orderVerifiedEmail, phoneNumber: document.getElementById('ord-phone').value.trim(),
     });
