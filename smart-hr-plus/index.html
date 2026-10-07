@@ -1237,6 +1237,14 @@ document.getElementById('download-btn').addEventListener('click', async () => {
     msg.textContent = '✓ 잠시 후 다운로드가 시작됩니다... (v' + data.version + ')';
     msg.style.display = 'block';
     setTimeout(() => { window.location.href = data.url; }, 800);
+    // 설치파일은 GitHub/Azure CDN에서 직접 받아지고 CORS로 막혀 있어, 페이지 JS가 실제
+    // 다운로드 완료 이벤트를 받을 방법이 없다(2026-10-07). 파일 크기 기준 예상 다운로드
+    // 시간(2MB/s 가정, 3~60초 범위) 후 완료 메시지로 전환 — 매우 느린 회선에서는 실제
+    // 완료 전에 표시될 수 있다.
+    const estSec = Math.min(60, Math.max(3, Math.round((data.file_size || 0) / (2 * 1024 * 1024))));
+    setTimeout(() => {
+      msg.textContent = '✓ 다운로드가 완료되었습니다 (v' + data.version + ')';
+    }, 800 + estSec * 1000);
   } catch (err) {
     msg.className = 'form-msg error';
     msg.textContent = '⚠ ' + err.message;
